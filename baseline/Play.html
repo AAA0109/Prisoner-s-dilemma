@@ -1,0 +1,111 @@
+{{ block content }}
+
+<div id="wait" style="display: none">
+    <p>
+        Waiting for the other player to decide...
+    </p>
+    <progress></progress>
+</div>
+<div id="decide" style="display: none">
+    <div id="results" style="display: none">
+        <p>
+            Here are the results of the last period:
+        </p>
+        <table class="table">
+            <tr>
+                <th>Player</th>
+                <th>Decision</th>
+            </tr>
+            <tr>
+                <td>Me</td>
+                <td id="my-decision"></td>
+            </tr>
+            <tr>
+                <td>Other player</td>
+                <td id="other-decision"></td>
+            </tr>
+        </table>
+    </div>
+
+    <h5>
+        Supergame {{ subsession.round_number }},
+        period <span id="period"></span>
+    </h5>
+
+    <label>Please decide:
+        <button type="button" onclick="cooperate()">
+            Cooperate
+        </button>
+        <button type="button" onclick="defect()">
+            Defect
+        </button>
+    </label>
+
+    <br><br>
+    {{ include C.INSTRUCTIONS_TEMPLATE }}
+</div>
+
+<script>
+    let waitDiv = document.getElementById('wait');
+    let decideDiv = document.getElementById('decide');
+    let resultsDiv = document.getElementById('results');
+    let input = document.getElementById('input');
+    let playerCells = [
+        document.getElementById('my-decision'),
+        document.getElementById('other-decision')
+    ];
+    if (js_vars.my_id === 2)
+        playerCells.reverse();
+
+    function cooperate() {
+        liveSend({'coop': true});
+    }
+
+    function defect() {
+        liveSend({'coop': false});
+    }
+
+    function show(ele) {
+        for (let div of [waitDiv, decideDiv]) {
+            div.style.display = (div === ele) ? 'block' : 'none';
+        }
+    }
+
+    function showResults(results) {
+        for (let i = 0; i < results.coops.length; i++) {
+            playerCells[i].innerText = results.coops[i] ? 'Cooperate' : 'Defect';
+        }
+        // it's only hidden in the first period
+        resultsDiv.style.display = 'block';
+        resultsDiv.style.backgroundColor = 'lightgreen';
+        setTimeout(function (event) {
+            resultsDiv.style.backgroundColor = '';
+        }, 1000);
+
+    }
+
+    function liveRecv(data) {
+        console.log('liveRecv', JSON.stringify(data));
+        if (data.finished_sg) {
+            document.getElementById('form').submit();
+            return;
+        }
+        document.getElementById('period').innerText = data.iteration + 1;
+        let is_waiting = data.should_wait;
+        if (is_waiting) {
+            show(waitDiv);
+        } else {
+            show(decideDiv);
+        }
+        if (data.last_results) {
+            showResults(data.last_results);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({'type': 'load'});
+    });
+
+</script>
+
+{{ endblock }}

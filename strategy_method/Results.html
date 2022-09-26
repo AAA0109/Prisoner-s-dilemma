@@ -1,0 +1,34 @@
+{{ block title }}
+Results
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    {{ if player.id_in_group == 1 }}
+        You were given {{ C.ENDOWMENT }}, out of which you offered {{ group.amount_offered }} to the other player.
+        {{ if group.offer_accepted }}
+        Your offer was accepted.
+        {{ else }}
+        Your offer was rejected.
+        {{ endif }}
+    {{ else }}
+        The other player offered you {{ group.amount_offered }} out of the total {{ C.ENDOWMENT }}.
+        Based on your preferences, this offer was
+        {{ if group.offer_accepted }}
+        accepted.
+        {{ else }}
+        rejected.
+        {{ endif }}
+    {{ endif }}
+</p>
+
+<p>
+    Your payoff is therefore {{ player.payoff }}.
+</p>
+
+{{ include C.INSTRUCTIONS_FILE }}
+
+
+{{ endblock }}
+

@@ -1,0 +1,21 @@
+{{ block title }}
+Results
+{{ endblock }}
+
+{{ block content }}
+
+<p>Here is the row that was randomly chosen.</p>
+
+{{ include C.TABLE_TEMPLATE }}
+
+<p>
+    {{ if player.chose_lottery }}
+    You chose (and {{ if player.won_lottery }}won{{ else }}lost{{ endif }}) the lottery,
+    {{ else }}
+    You chose the sure payoff, {{ endif }}
+    so your payoff is {{ player.payoff }}.
+</p>
+
+{{ endblock }}
+
+

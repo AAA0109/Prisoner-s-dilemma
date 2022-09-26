@@ -1,0 +1,97 @@
+{{ block title}}
+Progress: <span id="task-progress"></span> / {{ C.NUM_TRIALS }}
+{{ endblock }}
+
+{{ block content }}
+
+<div class="container">
+    <table class="table">
+        <colgroup>
+            <col style="width: 50%"/>
+            <col style="width: 50%"/>
+        </colgroup>
+        <tr>
+            <td>Your total payoff</td>
+            <td id="cum_payoff"></td>
+        </tr>
+        <tr>
+            <td>Last card reward</td>
+            <th id="reward" style="color: green"></th>
+        </tr>
+        <tr>
+            <td>Last card cost</td>
+            <th id="cost" style="color: red"></th>
+        </tr>
+    </table>
+
+
+    <div class="row">
+        {{ for letter in 'ABCD' }}
+        <div class="col">
+            <button type="button" onclick="selectDeck(this)" value="{{ letter }}" class="btn-card">
+                <!-- it's just a coincidence that we use the bootstrap 'card' element to represent a card :) -->
+                <div class="card" style="width: 10rem; height: 14rem">
+                    <div class="card-body">
+                        <h2 class="card-title">Deck</h2>
+                        <h1 class="card-title">{{ letter }}</h1>
+                    </div>
+                </div>
+            </button>
+        </div>
+        {{ endfor }}
+
+    </div>
+
+    <br><br>
+    {{ include 'iowa_gambling/instructions.html' }}
+</div>
+
+<script>
+    let buttons = document.getElementsByClassName('btn-card');
+    let msgCost = document.getElementById('cost');
+    let msgReward = document.getElementById('reward');
+    let msgCumPayoff = document.getElementById('cum_payoff');
+    let msgProgress = document.getElementById('task-progress');
+
+    function selectDeck(btn) {
+        liveSend({'letter': btn.value});
+        for (let btn of buttons) {
+            btn.disabled = 'disabled';
+        }
+    }
+
+    function liveRecv(data) {
+        if ('finished' in data) {
+            document.getElementById('form').submit();
+            return;
+        }
+        console.log(data);
+        if ('reward' in data) {
+            // unpack
+            let cost = data.cost;
+            let reward = data.reward;
+
+            msgReward.innerHTML = cu(reward);
+            msgCost.innerHTML = cost === 0 ? '' : cu(cost);
+        }
+
+        msgCumPayoff.innerHTML = cu(data.cum_payoff);
+        msgProgress.innerHTML = data.num_trials;
+
+        for (let btn of buttons) {
+            btn.disabled = '';
+        }
+
+    }
+
+    function cu(amount) {
+        return `${amount} points`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+
+</script>
+
+{{ endblock }}

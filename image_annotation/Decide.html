@@ -1,0 +1,54 @@
+{{ block title }}
+Image annotation
+{{ endblock }}
+
+{{ block content }}
+<link type="text/css" rel="stylesheet" href="{{ static 'image_annotation/annotorious/css/annotorious.css' }}"/>
+
+<p>
+    Let's suppose you were considering moving to another country.
+    Here is a chart that shows results of a survey where people were asked
+    what other country they would most like to live in.
+</p>
+
+<img src="{{ static 'image_annotation/best_country_to_live.png' }}"
+     width="600px"
+     class="annotatable"/>
+
+{{ if form.annotations.errors }}
+    <p class="form-control-errors">You must annotate the image.</p>
+{{ endif }}
+
+<p><b>
+    Add 1-3 annotations to the chart, to explain/support your decision
+    (click and drag on part of the chart, then write your comment).
+</b></p>
+<input type="hidden" name="annotations" />
+
+{{ formfield 'decision' }}
+
+{{ next_button }}
+
+<script src="{{ static 'image_annotation/annotorious/annotorious.min.js' }}"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (event) {
+        anno.addHandler('onAnnotationCreated', function (annotation) {
+            // don't take annotations from images in history.
+            // but this seems to exclude all annotations.
+            // src is relative, but annotorious seems to record only
+            // absolute URLs.
+
+            let annotations = anno.getAnnotations();
+            for (let i = 0; i < annotations.length; i++) {
+                // remove noise
+                delete annotations[i].context;
+            }
+
+            let annotationsStr = JSON.stringify(annotations);
+            // todo: replace with formfields
+            document.getElementsByName('annotations')[0].value = annotationsStr;
+        });
+    });
+
+</script>
+{{ endblock }}

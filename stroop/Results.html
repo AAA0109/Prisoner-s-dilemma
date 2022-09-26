@@ -1,0 +1,28 @@
+{{ block title }}
+  Results
+{{ endblock }}
+
+{{ block content }}
+
+  <table class="table">
+    <tr>
+      <th>Number of correct answers</th>
+      <td>{{ player.num_correct }} / {{ C.NUM_TRIALS }}</td>
+    </tr>
+    <tr>
+      <th>Average for congruent</th>
+      <td>{{ player.avg_congruent }} ms</td>
+    </tr>
+    <tr>
+      <th>Average for incongruent</th>
+      <td>{{ player.avg_incongruent }} ms</td>
+    </tr>
+    <tr>
+      <th>Difference</th>
+      <td>{{ player.incongruent_minus_congruent }} ms</td>
+    </tr>
+  </table>
+
+{{ endblock }}
+
+

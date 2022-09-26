@@ -1,0 +1,40 @@
+{{ block title }}
+Positive and Negative Affect Schedule (PANAS-SF)
+{{ endblock }}
+{{ block content }}
+
+<p>
+    For each word, indicate the extent you have felt
+    this way over the past week.
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>
+        </th>
+        <th>1<br>Very slightly<br>or not at all</th>
+        <th>2<br>A little</th>
+        <th>3<br>Moderately</th>
+        <th>4<br>Quite a bit</th>
+        <th>5<br>Extremely</th>
+    </tr>
+    {{ for field in form }}
+    <tr>
+        <th>{{ field.label }}</th>
+        {{ for option in field }}
+        <td>{{ option }}</td>
+        {{ endfor }}
+    </tr>
+    {{ endfor }}
+</table>
+
+{{ next_button }}
+
+<script>
+    // workaround needed until wtforms #615 is published
+    for (let option of document.querySelectorAll('input[type=radio]')) {
+        option.required = 'required';
+    }
+</script>
+
+{{ endblock }}

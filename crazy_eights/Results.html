@@ -1,0 +1,15 @@
+{{ block title }}
+    Results
+{{ endblock }}
+
+{{ block content }}
+
+    {{ if player.is_winner }}
+        You won!
+    {{ else }}
+        Another player won :(
+    {{ endif }}
+
+{{ endblock }}
+
+

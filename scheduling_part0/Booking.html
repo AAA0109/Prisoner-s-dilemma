@@ -1,0 +1,102 @@
+{{ block title }}
+Booking
+{{ endblock }}
+{{ block content }}
+<p>
+  You are about to take part in a game that requires several people
+  online at the same time.
+  To coordinate, please book one of the below time slots.
+</p>
+
+<table class="table">
+  <thead>
+    <th>Slot</th>
+    <th>Bookings</th>
+    <th>Openings</th>
+    <th>Note</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </thead>
+  <tbody id="batches">
+
+  </tbody>
+</table>
+
+<p>
+  When it's time for your scheduled game, press the button below.
+</p>
+<button id="next-button" class="btn btn-primary">Move to waiting page</button>
+
+<!-- luxon library for date formatting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.0.2/luxon.min.js" integrity="sha512-frUCURIeB0OKMPgmDEwT3rC4NH2a4gn06N3Iw6T1z0WfrQZd7gNfJFbHrNsZP38PVXOp6nUiFtBqVvmCj+ARhw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  const DateTime = luxon.DateTime;
+  let table = document.getElementById('batches');
+  function liveRecv(data) {
+    if (data.batches) {
+      table.innerHTML = '';
+      for (let batch of data.batches) {
+        let has_free_slots = batch.num_free_slots > 0
+        let player_ids = batch.player_ids;
+        let numPlayers = player_ids.length;
+        let bookedByMe = player_ids.includes(js_vars.my_id)
+        let isInFuture = batch.time * 1000 > Date.now();
+        if (bookedByMe || (has_free_slots && isInFuture)) {
+          let bookBtn, cancelBtn, bookedIndicator;
+          if (bookedByMe) {
+            bookBtn = '';
+            cancelBtn = `<button type="button" onclick="cancelBooking(this)">Cancel</button>`;
+            bookedIndicator = "You are booked";
+            document.getElementById('next-button').style.display = '';
+          } else {
+            bookBtn = has_free_slots ? `<button type="button" onclick="makeBooking(this)">Book</button>` : '';
+            cancelBtn = '';
+            bookedIndicator = '';
+          }
+          let tr = `
+            <tr data-batch="${batch.number}">
+              <td data-time="${batch.time}" class="batch-time"></td>
+              <td>${numPlayers}</td>
+              <td>${batch.num_free_slots}</td>
+              <td>${bookedIndicator}</td>
+              <td>${bookBtn}</td>
+              <td>${cancelBtn}</td>
+           </tr>
+          `;
+          table.insertAdjacentHTML('beforeend', tr);
+        }
+      }
+      formatAllTimestamps();
+    }
+  }
+
+  function makeBooking(btn) {
+    let batch_number = parseInt(btn.parentNode.parentNode.dataset.batch);
+    liveSend({'type': 'book', 'batch_number': batch_number});
+  }
+
+  function cancelBooking(btn) {
+    let batch_number = parseInt(btn.parentNode.parentNode.dataset.batch);
+    liveSend({'type': 'cancel'});
+  }
+
+  document.addEventListener("DOMContentLoaded", function (event) {
+    liveSend({'type': 'load'});
+  });
+
+  function formatAllTimestamps() {
+      for (let ele of document.getElementsByClassName('batch-time')) {
+        let dt = DateTime.fromSeconds(parseInt(ele.dataset.time));
+        let timeAbs = dt.toLocaleString(DateTime.TIME_SIMPLE, {locale: 'en'});
+        let timeRel = dt.toRelative({locale: 'en'});
+        ele.innerHTML = `${timeAbs} (${timeRel})`;
+      }
+  }
+
+  setInterval(formatAllTimestamps, 5 * 1000);
+
+</script>
+
+{{ endblock }}

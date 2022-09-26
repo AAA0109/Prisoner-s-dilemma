@@ -1,0 +1,30 @@
+{{ block content }}
+
+<div class="container">
+    <div class="card">
+        <h4 class="card-header">
+            Please wait
+        </h4>
+        <div class="card-body">
+            <p>Waiting for others</p>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function liveRecv(data) {
+        console.log('data', data)
+        if (data.finished) {
+            document.getElementById("form").submit();
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", (event) => {
+        liveSend({'type': 'wait_page'});
+    });
+</script>
+
+{{ endblock }}

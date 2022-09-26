@@ -1,0 +1,54 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+
+<!-- height is needed to avoid scroll to top: https://www.highcharts.com/forum/viewtopic.php?t=12731 -->
+<div id="highchart" style="height: 30em">
+
+</div>
+
+<script>
+    function redrawChart(series) {
+        Highcharts.chart('highchart', {
+
+            title: {
+                text: 'History'
+            },
+            yAxis: {
+                title: {
+                    text: 'Contributions'
+                },
+                min: 0,
+                max: js_vars.max_contribution
+            },
+
+            xAxis: {
+                title: {
+                    text: 'Time (seconds)'
+                },
+                min: 0
+            },
+
+            plotOptions: {
+                series: {
+                    label: {
+                        enabled: false
+                    },
+                    step: 'left',
+                    animation: false
+                },
+                line: {
+                    marker: {
+                        enabled: false
+                    }
+                }
+            },
+
+            series: series,
+
+            credits: {
+                enabled: false
+            }
+
+        });
+    }
+</script>

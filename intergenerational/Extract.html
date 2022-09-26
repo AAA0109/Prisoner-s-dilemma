@@ -1,0 +1,53 @@
+{{ block title }}Extract{{ endblock }}
+{{ block content }}
+
+    <p>
+        This game is a simulation of how subsequent generations use a natural resource
+        (cutting down a forest for lumber).
+    </p>
+
+    <p>
+        The forest will start out with 100 acres.
+        Each generation, the size of the forest increases by a factor of {{ C.MULTIPLIER }}.
+        But each generation also has the opportunity to extract some amount of the forest for lumber.
+    </p>
+
+    {{ if session.intergenerational_history }}
+        <h3>History</h3>
+        <table class="table">
+            <tr>
+                <th>Generation</th>
+                <th>At period start (value0)</th>
+                <th>After growth (value1)</th>
+                <th>Extracted</th>
+                <th>Final amount (value2)</th>
+            </tr>
+            {{ for row in session.intergenerational_history }}
+            <tr>
+                <td>{{ row.generation }}</td>
+                <td>{{ row.value0 }}</td>
+                <td>{{ row.value1 }}</td>
+                <td>{{ row.extracted }}</td>
+                <td>{{ row.value2 }}</td>
+            </tr>
+            {{ endfor }}
+        </table>
+    {{ endif }}
+
+    <h3>Current</h3>
+    <p>
+        During this generation the rainforest has grown
+        from {{ player.value0 }}
+        to <b>{{ player.value1 }}</b> acres.
+    </p>
+
+    <p>
+        How much of this do you want to extract for the current
+        generation?
+    </p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}

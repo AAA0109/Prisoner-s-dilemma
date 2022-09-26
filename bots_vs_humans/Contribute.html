@@ -1,0 +1,17 @@
+{{ block title }}
+    Round {{ subsession.round_number }}
+{{ endblock }}
+{{ block content }}
+
+    <p>
+        This is a multi-round public goods game where the {{ C.BOTS_PER_GROUP }} other players in your group
+        are <b>bots</b>.
+        The endowment is {{ C.ENDOWMENT }},
+        and the efficiency factor is {{ C.MULTIPLIER }}.
+    </p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}

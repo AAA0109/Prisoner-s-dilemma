@@ -1,0 +1,34 @@
+{{ block title }}
+    Results
+{{ endblock }}
+
+{{ block content }}
+
+    {{ if group.reached_consensus }}
+        <p>
+            Congratulations! Your group reached a consensus. Here is the results table:
+        </p>
+
+        <table class="table">
+            <tr>
+                <th>Player</th>
+                <th>Rank</th>
+                <th>Payoff</th>
+            </tr>
+            {{ for p in group.get_players() }}
+                <tr>
+                    <td>Player {{ p.id_in_group }} {{ if p == player }}(me){{ endif }}</td>
+                    <td>{{ p.rank_label }}</td>
+                    <td>{{ p.payoff }}</td>
+                </tr>
+            {{ endfor }}
+        </table>
+
+    {{ else }}
+        <p>Sorry, you did not reach a consensus. Your payoff is 0.</p>
+    {{ endif }}
+
+    {{ next_button }}
+{{ endblock }}
+
+

@@ -1,0 +1,19 @@
+{{ block title }}
+    Results
+{{ endblock }}
+
+{{ block content }}
+
+    <p>Your bid was {{ player.bid }}. </p>
+    {{ if player.is_winner }}
+    <p>This was the highest bid. Therefore you win!</p>
+    {{ else }}
+    <p>
+        The highest bid was {{ group.highest_bid }}.
+        Therefore, you did not win the item.
+    </p>
+    {{ endif }}
+
+{{ endblock }}
+
+

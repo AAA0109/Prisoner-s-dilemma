@@ -1,0 +1,26 @@
+{{ block title }}
+Your role and decision
+{{ endblock }}
+
+{{ block content }}
+
+{{ include C.INSTRUCTIONS_FILE }}
+
+<p>
+    You are the <b>responder</b>.
+</p>
+
+<p>
+    The proposer will make you an offer on how to divide the {{ C.ENDOWMENT }}.
+</p>
+
+<p>
+    Please choose below how you would respond to each of the possible offers.
+</p>
+
+{{ formfields }}
+
+{{ next_button }}
+
+{{ endblock }}
+

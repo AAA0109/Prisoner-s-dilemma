@@ -1,0 +1,10 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink"
+width="200px" height="200px" viewbox="0 0 200 200"
+preserveAspectRatio="none">
+
+<path 
+    d="m60,10 L60,60 L10,60 L10,135 L10,135 L60,135 L60,185 L135,185 L135,135 L185,135 L185,60 L135,60 L135,10Z" 
+    fill="yellow" stroke="black" stroke-width="5" /> 
+</svg>

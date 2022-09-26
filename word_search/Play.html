@@ -1,0 +1,100 @@
+{{ block title }}
+Word search
+{{ endblock }}
+{{ block content }}
+
+<style>
+    .word-board {
+        text-align: center;
+        max-width: 15em;
+    }
+</style>
+
+<table class="table table-bordered word-board">
+    {{ for row in board }}
+    <tr>
+        {{ for char in row }}
+        <td>{{ char }}</td>
+        {{ endfor }}
+
+    </tr>
+    {{ endfor }}
+</table>
+
+<input id="word" required minlength="3" autofocus>
+<button type="button" onclick="sendWord()">Send</button>
+<div id="news"></div>
+<br>
+<h5>Words already found</h5>
+<p id="found-words"></p>
+<h5>Scores</h5>
+<table class="table table-striped">
+    <tbody id="scores-tbody">
+    </tbody>
+</table>
+<h5>Instructions</h5>
+<ul>
+    <li>Words can be in any direction including diagonal, and can change direction.</li>
+</ul>
+
+<script>
+    let input = document.getElementById('word');
+    let newsDiv = document.getElementById('news');
+    let scoresBody = document.getElementById('scores-tbody');
+    let foundWords = document.getElementById('found-words');
+
+    input.addEventListener("keydown", function (event) {
+        newsDiv.innerHTML = '';
+        if (event.key === "Enter") {
+            sendWord();
+        }
+    });
+
+    function sendWord() {
+        if (input.reportValidity()) {
+            liveSend({'word': input.value});
+            input.value = '';
+        }
+    }
+
+    function showNews(word, msg, success) {
+        let color = success ? 'green' : 'red';
+        newsDiv.innerHTML = `<span style="color: ${color}">${word}: ${msg}</span>`;
+    }
+
+    function liveRecv(data) {
+        if ('news' in data) {
+            let {success, is_in_board, already_found, is_in_lexicon, word, id_in_group} = data.news;
+            if (id_in_group === js_vars.my_id) {
+                let feedback;
+                if (success) {
+                    feedback = '+1';
+                } else if (already_found) {
+                    feedback = 'Already found';
+                } else if (!is_in_board) {
+                    feedback = 'Not in board';
+                } else {
+                    feedback = 'Not in lexicon';
+                }
+                showNews(word, feedback, success);
+            }
+        }
+        scoresBody.innerHTML = '';
+        for (let [id_in_group, score] of data.scores) {
+            let playerName = `Player ${id_in_group}`;
+            if (id_in_group === js_vars.my_id) {
+                playerName += ' (you)';
+            }
+            scoresBody.insertAdjacentHTML('beforeend', `<td>${playerName}</td><td>${score} points</td>`);
+        }
+        foundWords.innerHTML = data.found_words.join(', ');
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        liveSend({});
+    });
+
+
+</script>
+
+{{ endblock }}

@@ -1,0 +1,21 @@
+{{ block title }}
+Intro
+{{ endblock }}
+{{ block content }}
+
+<p>
+    Simple wait page implemented from scratch, using live pages.
+    You can use this if you need functionality that differs from that offered
+    by the built-in WaitPage, such as
+    making the wait page show who is still waiting,
+    using a live_method on the wait page,
+    having a timeout on the wait page, etc.
+</p>
+<p>
+    There are {{ C.PLAYERS_PER_GROUP }} players per group.
+</p>
+
+<p>Click next.</p>
+{{ next_button }}
+
+{{ endblock }}

@@ -1,0 +1,53 @@
+{{ block title }}
+    Nim
+{{ endblock }}
+{{ block content }}
+
+    <p id="news"></p>
+    <p>Current number:</p>
+    <div id="current_number"></div>
+    <p>How much to add:</p>
+    <button type="button" class="btn-step" onclick="liveSend(1)">1</button>
+    <button type="button" class="btn-step" onclick="liveSend(2)">2</button>
+    <button type="button" class="btn-step" onclick="liveSend(3)">3</button>
+
+    <script>
+
+        let newsEle = document.getElementById('news');
+        let current_number = document.getElementById('current_number');
+
+        function liveRecv(data) {
+            if (data.game_over) {
+                document.getElementById('form').submit();
+            }
+            let lastActor;
+            let btnDisabledStatus;
+            if (data.whose_turn === js_vars.my_id) {
+                lastActor = 'The other player';
+                btnDisabledStatus = ''
+            } else {
+                lastActor = 'You';
+                btnDisabledStatus = 'disabled'
+            }
+            for (let btn of document.getElementsByClassName('btn-step')) {
+                btn.disabled = btnDisabledStatus;
+            }
+            current_number.innerText = data.current_number;
+            let news = data.news;
+            if (news) {
+                newsEle.innerText = `${lastActor} added ${news.number}`;
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            liveSend(null);
+        });
+    </script>
+
+    <p>
+        This is a game of nim. You and the other take turns adding to a number.
+        The game starts at 1, and on each turn you can add 1, 2, or 3.
+        The player who reaches {{ C.TARGET }} wins the game.
+    </p>
+
+{{ endblock }}

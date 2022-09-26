@@ -1,0 +1,20 @@
+{{ block title }}
+    Results
+{{ endblock }}
+
+{{ block content }}
+
+    <table class="table">
+        <tr>
+            <th>Items in your possession</th>
+            <td>{{ player.num_items }}</td>
+        </tr>
+        <tr>
+            <th>Payoff</th>
+            <td>{{ player.payoff }}</td>
+        </tr>
+    </table>
+
+{{ endblock }}
+
+

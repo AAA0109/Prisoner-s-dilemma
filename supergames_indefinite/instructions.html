@@ -1,0 +1,39 @@
+<div class="card bg-light m-3">
+    <div class="card-body">
+
+    <h3>
+        Instructions
+    </h3>
+
+    <p>
+        This is an indefinitely repeated prisoner's dilemma
+        with a stopping probability of {{ C.STOPPING_PROBABILITY }}.
+        It will repeat for {{ C.NUM_ROUNDS }} supergames.
+
+    </p>
+
+    <p>
+        Here is the payoff matrix:
+    </p>
+
+    <table class='table table-bordered text-center'
+           style='width: auto; margin: auto'>
+        <tr>
+            <td></td>
+            <th>Other Cooperates</th>
+            <th>Other Defects</th>
+        </tr>
+        <tr>
+            <th>You Cooperate</th>
+            <td>You: {{ C.PAYOFFB }}, Other: {{ C.PAYOFFB }}</td>
+            <td>You: {{ C.PAYOFFD }}, Other: {{ C.PAYOFFA }}</td>
+        </tr>
+        <tr>
+            <th>You Defect</th>
+            <td>You: {{ C.PAYOFFA }}, Other: {{ C.PAYOFFD }}</td>
+            <td>You: {{ C.PAYOFFC }}, Other: {{ C.PAYOFFC }}</td>
+        </tr>
+    </table>
+
+</div>
+</div>

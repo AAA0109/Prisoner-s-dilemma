@@ -1,0 +1,21 @@
+{{ block title }}
+    Your role and decision
+{{ endblock }}
+
+{{ block content }}
+    {{ include C.INSTRUCTIONS_FILE }}
+
+    <p>
+        You are the <b>proposer</b>.
+    </p>
+
+    <p>
+        The two of you have been given {{ C.ENDOWMENT }}.
+        Enter the amount that you want to offer to the responder.
+    </p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}

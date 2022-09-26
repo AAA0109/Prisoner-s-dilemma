@@ -1,0 +1,132 @@
+{{ block content }}
+
+<style>
+    .card-icon {
+        font-size: 7em;
+    }
+
+    .red-suit {
+        color: red;
+    }
+
+    .black-suit {
+        color: black;
+    }
+
+    .card-button {
+        border: none;
+    }
+
+</style>
+
+<div id="status"></div>
+<h5>Current card</h5>
+<div id="starter"></div>
+<h5>Your hand</h5>
+<div id="hand"></div>
+<br>
+<p>Click the deck to take a new card</p>
+<div>
+    <button type="button" class="card-button card-icon" onclick="sendStock()">
+        🂠
+    </button>
+</div>
+<br>
+<h5>Card counts</h5>
+<table class="table" id="scores">
+</table>
+<h5>Instructions</h5>
+<ul>
+    <li>Click a card to play it. It must match the suit or number of the last chosen card</li>
+    <li>If you have no playable card, take a new one from the deck.</li>
+</ul>
+
+<script>
+    let handDiv = document.getElementById('hand');
+    let statusDiv = document.getElementById('status');
+    let starterDiv = document.getElementById('starter');
+    let scoresTable = document.getElementById('scores');
+
+    function makeIcon(card) {
+        if (card === '') {
+            return '(blank; please place any card)'
+        }
+        let number = card[0];
+        let suit = card[1];
+        let number_char = js_vars.NUMBERS_TO_CODEPOINTS[number];
+        let suit_char = js_vars.SUITS_TO_CODEPOINTS[suit];
+        let color = 'HD'.includes(suit) ? 'red' : 'black';
+        // there are unicode characters for each playing card
+        return `<span class="card-icon ${color}-suit">&#x1F0${suit_char}${number_char}</span>`;
+    }
+
+    function makeButton(card) {
+        let icon = makeIcon(card);
+        return `<button type="button" value="${card}" onclick="sendCard(this)" class="card-button pick">${icon}</button>`;
+    }
+
+    function layoutHand(hand) {
+        handDiv.innerHTML = hand.map(e => makeButton(e)).join('');
+    }
+
+    function sendCard(btn) {
+        let card = btn.value;
+        liveSend({'type': 'move', 'move': card});
+    }
+
+    function sendPass() {
+        liveSend({'type': 'pass'});
+    }
+
+    function sendStock() {
+        liveSend({'type': 'stock'});
+    }
+
+    function enableButtons(enabled) {
+        for (let ele of document.getElementsByClassName('card-button')) {
+            ele.disabled = enabled ? '' : 'disabled';
+            console.log(ele.disabled);
+        }
+    }
+
+    function liveRecv(data) {
+        console.log(data);
+        if (data.finished) {
+            document.getElementById('form').submit();
+        }
+        if (data.error) {
+            window.alert(data.msg);
+            return;
+        }
+        let isMyTurn = data.whose_turn === js_vars.my_id;
+        console.log('ismyturn', isMyTurn);
+
+        layoutHand(data.hand);
+        enableButtons(isMyTurn);
+
+        starterDiv.innerHTML = makeIcon(data.starter);
+        let status;
+        if (isMyTurn) {
+            status = `<span style="color: green">It's your turn</span>`;
+        } else {
+            status = `It's player ${data.whose_turn}'s turn`;
+        }
+        statusDiv.innerHTML = status;
+
+        scoresTable.innerHTML = '';
+        for (let [id_in_group, num_cards] of data.card_counts) {
+            let playerName = `Player ${id_in_group}`;
+            if (id_in_group === js_vars.my_id) {
+                playerName += ' (you)';
+            }
+            scoresTable.insertAdjacentHTML('beforeend', `<td>${playerName}</td><td>${num_cards} cards</td>`);
+        }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        liveSend({'type': 'load'});
+    });
+</script>
+
+{{ endblock }}

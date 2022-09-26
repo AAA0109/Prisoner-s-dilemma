@@ -1,0 +1,32 @@
+{{ block title }}
+Results
+{{ endblock }}
+
+{{ block content }}
+
+<table class="table">
+    <tr>
+        <td>Extraversion</td>
+        <td>{{ player.extraversion }} / 5</td>
+    </tr>
+    <tr>
+        <td>Agreeableness</td>
+        <td>{{ player.agreeableness }} / 5</td>
+    </tr>
+    <tr>
+        <td>Conscientiousness</td>
+        <td>{{ player.conscientiousness }} / 5</td>
+    </tr>
+    <tr>
+        <td>Neuroticism</td>
+        <td>{{ player.neuroticism }} / 5</td>
+    </tr>
+    <tr>
+        <td>Openness</td>
+        <td>{{ player.openness }} / 5</td>
+    </tr>
+</table>
+
+{{ endblock }}
+
+

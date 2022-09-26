@@ -1,0 +1,90 @@
+{{ block title }}
+Negotiation
+{{ endblock }}
+{{ block content }}
+
+<p>
+    Based on your performances in the previous game, you need to now agree on ranks,
+    which will determine your payoffs.
+    Two people cannot have the same rank.
+    You have {{ C.TIMEOUT_SECONDS }} seconds to come to an agreement.
+    During the negotiation, all payoffs will shrink down gradually
+    and will hit 0 if a consensus is not reached in time.
+</p>
+
+
+<p>
+    This table shows in real time the ranks each player gives themselves.
+</p>
+<table class="table">
+    <tr>
+        <th></th>
+        {{ for d in C.RANKS }}
+        <th>
+            {{ d.label }} (<span id="cur-payoff-{{ d.number }}"></span> points)
+        </th>
+        {{ endfor }}
+    </tr>
+    {{ for p in group.get_players() }}
+    <tr>
+        <th>
+            Participant {{ p.id_in_group }}
+            {{ if p == player }}(me){{ endif }}
+        </th>
+        {{ for d in C.RANKS }}
+        <td>
+            <input type="radio" name="rank{{ p.id_in_group }}" onclick="sendRank(this)"
+                   value="{{ d.number }}"
+                   id="radio{{ d.number }}"
+                   {{ if p != player }}disabled{{ endif }}
+            >
+        </td>
+        {{ endfor }}
+    </tr>
+    {{ endfor }}
+</table>
+
+<div class="chat-widget">
+    <b>Chat with your group</b>
+    {{ chat }}
+</div>
+
+
+<script>
+    let curPayoffDivs = js_vars.RANKS.map(n => document.getElementById(`cur-payoff-${n.number}`));
+    let form = document.getElementById('form');
+
+    function sendRank(radio) {
+        liveSend({'proposed_rank': parseInt(radio.value)})
+    }
+
+    function liveRecv(data) {
+        if (data.finished) {
+            document.getElementById('form').submit();
+            return;
+        }
+        for (let [id_in_group, rank] of data.ranks) {
+            if (rank === null) continue;
+            form[`rank${id_in_group}`].value = rank;
+        }
+    }
+
+    // update the shrinking payoffs every second
+    setInterval(
+        function () {
+            let seconds_left = Math.max(0, js_vars.deadline - Date.now() / 1000);
+            let frac = seconds_left / js_vars.TIMEOUT_SECONDS;
+            for (let d of js_vars.RANKS) {
+                curPayoffDivs[d.number - 1].innerText = Math.round(d.payoff * frac);
+            }
+        },
+        1000
+    )
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        liveSend({});
+    });
+
+</script>
+
+{{ endblock }}

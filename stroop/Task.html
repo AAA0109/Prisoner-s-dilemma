@@ -1,0 +1,73 @@
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+  {{ for path in image_paths }}
+    <img class="stroopimage" src="{{ static path }}" style="display: none">
+  {{ endfor }}
+
+  <div id="lastresult" style="font-size: 100px"></div>
+  <div id="loading">Get ready...</div>
+
+  <script>
+      let image_id;
+      let images = document.getElementsByClassName('stroopimage');
+      let lastresult = document.getElementById('lastresult');
+      let displayed_timestamp;
+      let loading = document.getElementById('loading');
+
+      // time before we unhideDiv the first image (give time to get hands ready on keyboard)
+      const INITIAL_DELAY = 1000;
+
+      // time in between showing showing ✓ or ✗, and showing the next image
+      const IN_BETWEEN_DELAY = 1000;
+
+      function liveRecv(data) {
+          for (let image of images) {
+              image.style.display = 'none';
+          }
+          if (data.feedback)
+            lastresult.innerHTML = data.feedback;
+          lastresult.style.display = 'block';
+          if (data.is_finished) {
+              document.getElementById('form').submit();
+          } else {
+              image_id = data.image_id;
+              setTimeout(loadImage, IN_BETWEEN_DELAY);
+          }
+      }
+
+      function loadImage() {
+          lastresult.style.display = 'none';
+          images[image_id].style.display = 'block';
+          isRefractoryPeriod = false;
+          displayed_timestamp = performance.now();
+      }
+
+      let isRefractoryPeriod = false;
+
+      document.addEventListener("keypress", function (event) {
+          let color = js_vars.color_keys[event.key];
+          if (isRefractoryPeriod) return;
+          isRefractoryPeriod = true;
+          if (color) {
+              liveSend({
+                  submission: color,
+                  image_id: image_id,
+                  displayed_timestamp: displayed_timestamp,
+                  answered_timestamp: performance.now()
+              })
+          }
+      });
+
+      document.addEventListener('DOMContentLoaded', function (event) {
+        setTimeout(function () {
+              loading.style.display = 'none';
+              liveSend({});
+          }, INITIAL_DELAY);
+      });
+  </script>
+
+
+{{ endblock }}

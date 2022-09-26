@@ -1,0 +1,87 @@
+{{ block content }}
+
+<style>
+
+    #ttt-board td {
+        width: 3em;
+        height: 3em;
+        text-align: center;
+        font-size: x-large;
+        border: 1px solid black;
+    }
+
+    #ttt-board {
+        width: auto;
+        text-align: center;
+    }
+
+</style>
+
+<p>Your symbol is {{ player.symbol }}</p>
+
+<table id="ttt-board">
+    <tr>
+        <td id="square0" data-square="0" onclick="sendMove(this)"></td>
+        <td id="square1" data-square="1" onclick="sendMove(this)"></td>
+        <td id="square2" data-square="2" onclick="sendMove(this)"></td>
+    </tr>
+    <tr>
+        <td id="square3" data-square="3" onclick="sendMove(this)"></td>
+        <td id="square4" data-square="4" onclick="sendMove(this)"></td>
+        <td id="square5" data-square="5" onclick="sendMove(this)"></td>
+    </tr>
+    <tr>
+        <td id="square6" data-square="6" onclick="sendMove(this)"></td>
+        <td id="square7" data-square="7" onclick="sendMove(this)"></td>
+        <td id="square8" data-square="8" onclick="sendMove(this)"></td>
+    </tr>
+</table>
+<div id="status">
+
+</div>
+
+<script>
+
+    let my_symbol = js_vars.my_symbol;
+    let finished = false;
+
+    function writeStatus(msg) {
+        document.getElementById('status').innerText = msg;
+    }
+
+    function liveRecv(data) {
+        if (data.winning_symbol) {
+            finished = true;
+            if (data.winning_symbol === my_symbol) {
+                writeStatus('You won!');
+            } else {
+                writeStatus('You lost :(');
+            }
+        }
+        if (data.draw) {
+            writeStatus('Game ended in a draw');
+        }
+        if (data.whose_turn) {
+            if (data.whose_turn === my_symbol) {
+                writeStatus("It's your turn");
+            } else {
+                writeStatus("Waiting for the other player");
+            }
+        }
+        let boardState = data.board_state;
+        for (let i = 0; i < boardState.length; i++) {
+            document.getElementById(`square${i}`).innerText = {'X': '╳', 'O': '◯', ' ': ' '}[boardState[i]];
+        }
+    }
+
+    function sendMove(cell) {
+        if (finished) return;
+        liveSend({move: parseInt(cell.dataset.square)});
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+</script>
+
+{{ endblock }}

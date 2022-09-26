@@ -1,0 +1,41 @@
+{{ block title }}
+Personality test
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+Please evaluate the following statements, to complete the sentence:
+    <b>"I see myself as someone who...</b>".
+</p>
+
+
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>Disagree strongly</th>
+        <th>Disagree a little</th>
+        <th>Neither agree nor disagree</th>
+        <th>Agree a little</th>
+        <th>Agree strongly</th>
+    </tr>
+    {{ for field in form }}
+    <tr>
+        <th>{{ field.label }}</th>
+        {{ for option in field }}
+        <td>{{ option }}</td>
+        {{ endfor }}
+    </tr>
+    {{ endfor }}
+</table>
+
+{{ next_button }}
+
+<script>
+    // workaround needed until wtforms #615 is published
+    for (let option of document.querySelectorAll('input[type=radio]')) {
+        option.required = 'required';
+    }
+</script>
+
+{{ endblock }}

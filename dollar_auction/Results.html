@@ -1,0 +1,17 @@
+{{ block title }}
+    Page title
+{{ endblock }}
+
+{{ block content }}
+
+{{ if player.is_top_bidder }}
+    You were the top bidder. Your bid was {{ group.top_bid }}.
+{{ elif player.is_second_bidder }}
+    You were the second bidder. Your bid was {{ group.second_bid }}.
+{{ else }}
+    You were not the top bidder or the second bidder.
+{{ endif }}
+    Therefore, your final payoff is {{ player.payoff }}.
+{{ endblock }}
+
+

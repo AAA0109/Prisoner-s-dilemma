@@ -1,0 +1,44 @@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+
+<div id="highchart"></div>
+
+<script>
+    function redrawChart(to_self, to_other) {
+        Highcharts.chart('highchart', {
+            chart: {
+                type: 'bar'
+            },
+            title: null,
+            xAxis: {
+                categories: ['You', 'Other player'],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                max: 100,
+                labels: {
+                    overflow: 'justify'
+                },
+                title: {
+                    text: "Reward (in points)"
+                }
+            },
+            plotOptions: {
+                series: {
+                    animation: false
+                }
+
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                data: [to_self, to_other],
+                showInLegend: false,
+            }]
+        });
+    }
+</script>

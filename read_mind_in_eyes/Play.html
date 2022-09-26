@@ -1,0 +1,17 @@
+{{ block title }}
+    Face {{ subsession.round_number }} of {{ C.NUM_ROUNDS }}
+    {{ if is_practice }}(practice){{ endif}}
+{{ endblock }}
+{{ block content }}
+
+    <img src="{{ static image_path }}" style="padding-bottom: 100px">
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+    {{ if is_practice }}
+        {{ include C.INSTRUCTIONS_TEMPLATE }}
+    {{ endif}}
+
+{{ endblock }}

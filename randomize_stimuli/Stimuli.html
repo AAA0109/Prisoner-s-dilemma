@@ -1,0 +1,84 @@
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+<div id="stimulus-foods" class="panel" style="display: none">
+    <p>What food do you prefer?</p>
+    <button type="button" onclick="sendResponse('optionA')" id="foods-optionA"></button>
+    <button type="button" onclick="sendResponse('optionB')" id="foods-optionB"></button>
+</div>
+<div id="stimulus-drinks" class="panel" style="display: none">
+    <p>What drink do you prefer?</p>
+    <button type="button" onclick="sendResponse('optionA')" id="drinks-optionA"></button>
+    <button type="button" onclick="sendResponse('optionB')" id="drinks-optionB"></button>
+    <button type="button" onclick="sendResponse('optionC')" id="drinks-optionC"></button>
+</div>
+
+<div id="foods_intro" class="panel" style="display: none">
+    <p>
+        Now you will be shown a series of questions about your favorite foods. For each pair, indicate
+        your favorite food.
+    </p>
+    <button type="button" onclick="sendContinue()">continue</button>
+</div>
+<div id="drinks_intro" class="panel" style="display: none">
+    <p>
+        Now you will be shown a series of questions about your favorite drinks. For choice of 3 drinks, indicate
+        your favorite drink.
+    </p>
+    <button type="button" onclick="sendContinue()">continue</button>
+</div>
+
+<script>
+
+    let buttonrow = document.getElementById('buttonrow');
+    let trialId = null;
+
+    function unhideDiv(div_id) {
+        // note, 'block' has nothing to do with experimental blocks.
+        // this is just CSS lingo: https://www.w3schools.com/cssref/pr_class_display.asp
+        document.getElementById(div_id).style.display = 'block';
+    }
+
+    function liveRecv(data) {
+        console.log(data)
+        if (data.is_finished) {
+            document.getElementById('form').submit();
+        } else {
+            for (let div of document.getElementsByClassName('panel')) {
+                div.style.display = 'none';
+            }
+            let stimulus = data.stimulus;
+            let blockName = stimulus.block
+            trialId = stimulus.id;
+            if (stimulus.is_intro) {
+                let divId = blockName + '_intro';
+                unhideDiv(divId);
+            } else {
+                let divId = 'stimulus-' + blockName;
+                unhideDiv(divId);
+                for (let key of Object.keys(stimulus)) {
+                    if (key.startsWith('option')) {
+                        let buttonId = blockName + '-' + key;
+                        document.getElementById(buttonId).innerText = stimulus[key]
+                    }
+                }
+            }
+        }
+    }
+
+    function sendResponse(value) {
+        liveSend({'response': value, 'trialId': trialId});
+    }
+
+    function sendContinue() {
+        liveSend({'response': 'continue', 'trialId': trialId});
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+</script>
+
+{{ endblock }}

@@ -1,0 +1,16 @@
+{{ block content }}
+
+    <p>How much would you pay for the following product?</p>
+    <h5 class="card-title">{{ product.name }}</h5>
+    <img src="{{ static product.image_path }}" style="width: 50px">
+
+    {{ formfields }}
+    {{ next_button }}
+
+    <script>
+        // this part is optional. it automatically puts the cursor in the text box,
+        // so that the user doesn't need to click on it.
+        document.getElementsByName('willingness_to_pay')[0].focus();
+    </script>
+
+{{ endblock }}

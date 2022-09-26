@@ -1,0 +1,29 @@
+{{ block title }}Results{{ endblock }}
+{{ block content }}
+
+    <p>
+        You started with an endowment of {{ C.ENDOWMENT }},
+        of which you contributed {{ player.contrib }}.
+        Your group contributed {{ player.group_total_contrib }},
+        resulting in an individual share of {{ player.group_individual_share }}.
+        Your profit is therefore {{ player.payoff }}.
+    </p>
+
+    <table class="table table-striped">
+        <tr>
+            <td></td>
+            <th>Contribution</th>
+            <th>Payoff</th>
+        </tr>
+        {{ for ag in agents }}
+        <tr>
+            <td>{{ if ag == player }}You{{ else }} Bot {{ ag.agent_id }} {{ endif }}</td>
+            <td>{{ ag.contrib }}</td>
+            <td>{{ ag.payoff }}</td>
+        </tr>
+        {{ endfor }}
+    </table>
+
+    {{ next_button }}
+
+{{ endblock }}

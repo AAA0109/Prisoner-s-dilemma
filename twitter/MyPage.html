@@ -1,0 +1,119 @@
+{{ block title }}
+Player {{ player.id_in_group }}
+{{ endblock }}
+{{ block content }}
+
+<h4>Write something</h4>
+<p>
+    <input type="text" id="new-message" size="60">
+    <button type="button" onclick="sendMsg()">Post</button>
+</p>
+<br>
+
+<h4>My feed</h4>
+<div id="feed">
+</div>
+<br>
+
+<h4>My followers</h4>
+<ul id="followers">
+
+</ul>
+<br>
+
+<h4>People I follow</h4>
+<table id="i-follow" class="table">
+
+</table>
+
+<br>
+
+<h4>People I don't follow</h4>
+<table id="i-dont-follow" class="table">
+
+</table>
+<br>
+
+<script>
+
+    let newMessage = document.getElementById('new-message');
+    let feed = document.getElementById('feed');
+    let followers = document.getElementById('followers');
+    let i_follow = document.getElementById('i-follow');
+    let i_dont_follow = document.getElementById('i-dont-follow');
+
+    function sendMsg() {
+        let text = newMessage.value.trim();
+        if (text) {
+            liveSend({'type': 'write', 'text': text})
+        }
+        newMessage.value = '';
+    }
+
+    function toggle_follow(btn) {
+        liveSend({'type': 'toggle_follow', 'id_in_group': parseInt(btn.value)});
+    }
+
+    newMessage.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            sendMsg();
+        }
+    });
+
+    function getNickname(id_in_group) {
+        return id_in_group === js_vars.my_id ? 'Me' : `Player ${id_in_group}`;
+    }
+
+    function makeUserTable(ids_in_group, table_ele, am_following) {
+        let btnLabel = am_following ? 'Unfollow' : 'Follow';
+        table_ele.innerHTML = '';
+        for (let iig of ids_in_group) {
+            if (iig === js_vars.my_id) continue;
+            let nickname = getNickname(iig);
+            let row = `
+                <tr>
+                    <td>${nickname}</td>
+                    <td>
+                        <button type="button" value="${iig}" onclick="toggle_follow(this)">
+                            ${btnLabel}
+                        </button>
+                    </td>
+                </tr>`;
+
+            table_ele.insertAdjacentHTML('beforeend', row)
+        }
+    }
+
+    function liveRecv(data) {
+        if (data.full_load) {
+            makeUserTable(data.i_follow, i_follow, true);
+            makeUserTable(data.i_dont_follow, i_dont_follow, false);
+            feed.innerHTML = '';
+        }
+        if ('messages' in data) {
+            for (let msg of data.messages) {
+                let msgSpan = document.createElement('span');
+                msgSpan.textContent = msg.text;
+                let sender = getNickname(msg.id_in_group);
+                let row = `<div><b>${sender}</b>: ${msgSpan.innerHTML}</div>`;
+                feed.insertAdjacentHTML('afterbegin', row);
+            }
+        }
+        if ('followers' in data) {
+            followers.innerHTML = '';
+            for (let iig of data.followers) {
+                if (iig === js_vars.my_id) continue;
+                let nickname = getNickname(iig);
+                let row = `<li>${nickname}</li>`;
+                followers.insertAdjacentHTML('beforeend', row);
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({'type': 'load'});
+    });
+</script>
+
+
+{{ endblock }}

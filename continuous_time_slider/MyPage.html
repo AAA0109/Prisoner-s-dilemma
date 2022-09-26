@@ -1,0 +1,41 @@
+{{ block content }}
+
+<p>This is a continuous-time public goods game. You are <b>Player {{ player.id_in_group }}</b>.</p>
+
+<p>Use the slider to adjust your contribution in real time:</p>
+
+<input type="range" min="0" max="{{ max_contribution }}" step="1" class="form-range"
+       onchange="updateContribution(this)">
+
+<br><br>
+
+<p>Seconds since last change: <span id="secondsSinceChange">0</span></p>
+
+{{ include C.CHART_TEMPLATE }}
+
+<script>
+    let secondsSinceChange = 0;
+
+    function updateContribution(slider) {
+        liveSend({'contribution': parseInt(slider.value)});
+    }
+
+    function liveRecv(data) {
+        console.log(data)
+        if ('highcharts_series' in data) {
+            redrawChart(data.highcharts_series);
+            secondsSinceChange = 0;
+        }
+    }
+
+    setInterval(function() {
+        secondsSinceChange++;
+        document.getElementById('secondsSinceChange').innerHTML = secondsSinceChange;
+    }, 1000);
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        liveSend({});
+    });
+</script>
+
+{{ endblock }}

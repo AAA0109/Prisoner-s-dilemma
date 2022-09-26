@@ -1,0 +1,35 @@
+{{ block title }}
+SVO task: item {{ subsession.round_number }} of {{ C.NUM_ROUNDS }}
+{{ endblock }}
+{{ block content }}
+
+<p>
+    Choose a distribution between yourself
+    and the other player.
+</p>
+
+<div class="input-group">
+    <input type="range" name="choice" min="0" max="8" class="form-range" oninput="sliderMoved(this)">
+</div>
+
+{{ next_button }}
+
+{{ include C.CHART_TEMPLATE }}
+
+<script>
+    function sliderMoved(input) {
+        let idx = parseInt(input.value);
+
+        let row = js_vars.rows[idx];
+        let to_self = row.to_self;
+        let to_other = row.to_other;
+        redrawChart(to_self, to_other);
+    }
+
+
+</script>
+
+{{ include C.INSTRUCTIONS_TEMPLATE }}
+
+
+{{ endblock }}

@@ -1,0 +1,20 @@
+{{ block title }}
+{{ endblock }}
+{{ block content }}
+
+<p>
+    Make a choice for each of the below rows.
+    A random row will be chosen and you will be paid according to your choice for that row.
+</p>
+
+{{ include C.TABLE_TEMPLATE }}
+
+{{ next_button }}
+
+<script>
+    function sendPref(radio) {
+        liveSend({trial_id: radio.name, chose_lottery: radio.value === '1'});
+    }
+</script>
+
+{{ endblock }}

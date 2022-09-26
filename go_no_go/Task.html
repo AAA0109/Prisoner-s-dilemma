@@ -1,0 +1,76 @@
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+  {{ for path in image_paths }}
+      <img class="img-stimulus" src="{{ static path }}" style="display: none"></img>
+  {{ endfor }}
+
+  <div id="feedback" style="font-size: 100px"></div>
+  <div id="loading">Get ready...</div>
+
+  <script>
+      let images = document.getElementsByClassName('img-stimulus');
+      let feedback = document.getElementById('feedback');
+      let displayed_timestamp;
+      let loading = document.getElementById('loading');
+      let image_id_global = null;
+
+      // time before we unhideDiv the first image (give time to get hands ready on keyboard)
+      const INITIAL_DELAY = 2000;
+
+      // time in between showing showing ✓ or ✗, and showing the next image
+      const IN_BETWEEN_DELAY = 1000;
+
+      function liveRecv(data) {
+          for (let image of images) {
+              image.style.display = 'none';
+          }
+          if (data.feedback) {
+            feedback.innerHTML = data.feedback;
+            feedback.style.display = 'block';
+          }
+          if (data.is_finished) {
+              document.getElementById('form').submit();
+          } else {
+            image_id_global = data.image_id;
+            setTimeout(() => loadImage(data.image_id), IN_BETWEEN_DELAY);
+          }
+      }
+
+      function loadImage(image_id) {
+          feedback.style.display = 'none';
+          images[image_id].style.display = 'block';
+          isRefractoryPeriod = false;
+          displayed_timestamp = performance.now();
+          setTimeout(() => {
+            liveSend({'image_id': image_id, 'pressed': false})
+          }, 3000);
+      }
+
+      let isRefractoryPeriod = false;
+
+      document.addEventListener("keypress", function (event) {
+        if (event.key === '1') {
+          if (isRefractoryPeriod) return;
+          isRefractoryPeriod = true;
+          liveSend({
+              'image_id': image_id_global,
+              'pressed': true,
+              'displayed_timestamp': displayed_timestamp,
+              'answered_timestamp': performance.now()
+          })
+        }
+      });
+
+      document.addEventListener('DOMContentLoaded', function (event) {
+          setTimeout(function () {
+              loading.style.display = 'none';
+              liveSend({});
+          }, INITIAL_DELAY);
+      });
+  </script>
+
+
+{{ endblock }}

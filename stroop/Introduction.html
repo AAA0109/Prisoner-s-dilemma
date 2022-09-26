@@ -1,0 +1,29 @@
+{{ block title }}
+Instructions
+{{ endblock }}
+
+{{ block content }}
+
+This is a stroop test.
+
+<p>When you see a word, quickly enter the color of the word (not the word itself)</p>
+<p>With your keyboard, press the key representing the first letter of the color.</p>
+
+<table class="table">
+    <tr>
+        <th>Color</th>
+        <th>Letter</th>
+    </tr>
+    {{ for entry in C.COLOR_KEYS }}
+    <tr>
+        <td>{{ entry.1 }}</td>
+        <td>{{ entry.0 }}</td>
+    </tr>
+    {{ endfor }}
+</table>
+
+<p>When you are ready to start, press the button below.</p>
+<button class="btn btn-primary">Start</button>
+{{ endblock }}
+
+

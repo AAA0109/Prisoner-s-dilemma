@@ -1,0 +1,20 @@
+{{ block title }}
+    Final decision
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    We now reveal that door {{ player.door_revealed }} does not contain the prize.
+    Do you want to stay with door {{ player.door_first_chosen }}
+    or switch to door {{ player.door_not_revealed }}?
+</p>
+
+    <button name="door_finally_chosen" value="{{ player.door_first_chosen }}">
+        Stay with door {{ player.door_first_chosen }}
+    </button>
+    <button name="door_finally_chosen" value="{{ player.door_not_revealed }}">
+        Switch to door {{ player.door_not_revealed }}
+    </button>
+
+{{ endblock }}

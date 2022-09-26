@@ -1,0 +1,13 @@
+{{ block title }}
+  Results
+{{ endblock }}
+
+{{ block content }}
+
+You made {{ player.num_errors }} errors.
+{{ if avg_reaction_ms }}
+  Your average reaction time was {{ avg_reaction_ms }} ms.
+{{ endif }}
+{{ endblock }}
+
+

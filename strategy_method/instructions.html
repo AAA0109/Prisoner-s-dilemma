@@ -1,0 +1,47 @@
+<h3>
+    Instructions
+</h3>
+
+<div>
+
+    <p>
+        You have been paired with another player.
+        One player is the proposer and once is the responder.
+    </p>
+
+    <p>
+        The two of you will together receive {{ C.ENDOWMENT }}.
+        The proposer will make the responder an offer,
+        which the responder can accept or reject.
+        If the offer is rejected, both will
+        receive nothing.
+    </p>
+
+    <h4>
+        Proposer's role
+    </h4>
+
+    <p>
+        The proposer has the following {{ C.OFFER_CHOICES_COUNT }}
+        options on how to divide the {{ C.ENDOWMENT }} between the
+        two players.
+    </p>
+
+    <ol>
+        {{ for a in C.POSSIBLE_ALLOCATIONS }}
+        <li>{{ a.p2_amount }} for the responder (the proposer keeps {{ a.p1_amount }})</li>
+        {{ endfor }}
+    </ol>
+
+    <h4>
+        Responder's role
+    </h4>
+
+    <p>
+        While the proposer makes the offer, the responder can select
+        which {{ C.OFFER_CHOICES_COUNT }} offers stated above
+        to accept or reject.
+        After the proposer has made the offer, it will be either
+        accepted or rejected according to the responder's choices.
+    </p>
+</div>

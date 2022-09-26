@@ -1,0 +1,57 @@
+{{ block title }}
+Auction
+{{ endblock }}
+{{ block content }}
+
+<p id="msg-my-status"></p>
+<p id="msg-my-bid"></p>
+
+<button type="button" id="btn-bid" onclick="sendBid(this)"></button>
+
+<br><br>
+{{ include C.INSTRUCTIONS_TEMPLATE }}
+
+<script>
+    let bidBtn = document.getElementById('btn-bid');
+    let msgMyStatus = document.getElementById('msg-my-status');
+    let msgMyBid = document.getElementById('msg-my-bid');
+
+    function sendBid(btn) {
+        liveSend(parseInt(btn.value));
+    }
+
+    function liveRecv(data) {
+        console.log('liveRecv', data)
+        let am_top_bidder = data.top_bidder === js_vars.my_id;
+        let am_second_bidder = data.second_bidder === js_vars.my_id;
+
+        if (data.top_bid === 0) {
+            msgMyStatus.innerText = 'Nobody has made a bid yet';
+        } else if (am_top_bidder) {
+            msgMyStatus.innerText = 'You are the top bidder';
+            bidBtn.disabled = 'disabled';
+            msgMyBid.innerText = `Your bid is ${data.top_bid} points.`;
+        } else {
+            bidBtn.disabled = '';
+            if (am_second_bidder) {
+                msgMyBid.innerText = `Your bid is ${data.second_bid} points. The top bid is ${data.top_bid} points (player ${data.top_bidder})`;
+                msgMyStatus.innerText = 'You are the second bidder';
+            } else {
+                msgMyBid.innerText = '';
+                msgMyStatus.innerText = 'You are not the top or second bidder.'
+            }
+
+        }
+
+        let nextBid = data.top_bid + 10;
+        bidBtn.value = nextBid;
+        bidBtn.innerText = `Bid ${nextBid} points`;
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+</script>
+
+
+{{ endblock }}

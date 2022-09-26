@@ -1,0 +1,96 @@
+{{ block title }}
+Welcome to oTree Grocery
+{{ endblock }}
+{{ block content }}
+
+<h3>My cart</h3>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Total price</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="cart-body">
+
+    </tbody>
+</table>
+
+
+<p>
+    <button class="btn btn-primary">
+        Checkout (<b><span id="cart-total"></span></b>)
+    </button>
+
+    <script>
+        let myCart = document.getElementById('cart-body');
+        let cartTotal = document.getElementById('cart-total');
+
+        function cu(amount) {
+            return `${amount} points`;
+        }
+
+        function liveRecv(data) {
+            let html = '';
+            for (let item of data.items) {
+                html += `
+<tr>
+    <td>${item.name}</td>
+    <td>${item.quantity}</td>
+    <td>${cu(item.total_price)}</td>
+    <td><button type="button" value="${item.sku}" onclick="removeFromCart(this)" class="btn btn-secondary">-1</button></td>
+</tr>`;
+            }
+            myCart.innerHTML = html;
+            cartTotal.innerText = cu(data.total_price);
+        }
+
+    </script>
+
+<h3>Catalog</h3>
+<div class="d-flex flex-wrap">
+    {{ for p in C.PRODUCTS }}
+    <div class="card">
+        <div class="card-body">
+            <img src="{{ static p.image_path }}" class="card-img-top" style="width: 50px">
+            <h5 class="card-title">{{ p.name }}</h5>
+            <p class="card-text">
+                Price: {{ p.unit_price }}
+            </p>
+            <button type="button" value="{{ p.sku }}" onclick="addToCart(this)" class="btn btn-secondary">+1</button>
+        </div>
+    </div>
+    {{ endfor }}
+</div>
+
+<script>
+    function addToCart(ele) {
+        modifyCart(ele.value, 1);
+    }
+
+    function removeFromCart(ele) {
+        modifyCart(ele.value, -1);
+    }
+
+    function modifyCart(sku, delta) {
+        liveSend({'sku': sku, 'delta': delta});
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+
+
+</script>
+
+
+<!-- icon attribution; remove this if you're not using the grocery icons -->
+<br><br><br>
+<div style="font-size: x-small;">
+    Icons made by <a style="color: inherit;" href="https://www.freepik.com" title="Freepik">Freepik</a>
+    from <a style="color: inherit;" href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+</div>
+
+{{ endblock }}

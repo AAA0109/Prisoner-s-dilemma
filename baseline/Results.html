@@ -1,0 +1,17 @@
+{{ block title }}
+    Results of supergame {{ subsession.round_number }}
+{{ endblock }}
+
+{{ block content }}
+
+    <p>The supergame ended due to the random stopping rule.</p>
+
+    <p>
+        Your total payoff from the last supergame is {{ player.payoff }}.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+

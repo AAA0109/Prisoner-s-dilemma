@@ -1,0 +1,22 @@
+{{ block title }}
+    Thank you for your order
+{{ endblock }}
+
+{{ block content }}
+
+<p>Your order cost {{ player.total_price }}.</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+    </tr>
+    {{ for i in items }}
+        <tr>
+            <td>{{ i.name }}</td>
+            <td>{{ i.quantity }}</td>
+        </tr>
+    {{ endfor }}
+</table>
+
+{{ endblock }}

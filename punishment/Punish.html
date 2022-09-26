@@ -1,0 +1,40 @@
+{{ block title }}Punishment stage{{ endblock }}
+{{ block content }}
+
+    <p>
+        You contributed {{ player.contribution }}.
+        Here are the other players' contributions:
+    </p>
+    <table class="table">
+        {{ for p in other_players }}
+            <tr>
+                <td>Player {{ p.id_in_group }}</td>
+                <td>{{ p.contribution }}</td>
+            </tr>
+        {{ endfor }}
+    </table>
+
+    <p>
+        You can punish each player up to {{ C.MAX_PUNISHMENT }} points.
+        Each punishment point will reduce the player's payoff by 10%,
+        but will incur a cost to you, according to the table at the bottom.
+    </p>
+
+    {{ formfields }}
+
+    <table class="table table-striped">
+        <tr>
+            <th>Punishment points</th>
+            <th>Cost to you</th>
+        </tr>
+        {{ for entry in schedule }}
+        <tr>
+            <td>{{ entry.0 }}</td>
+            <td>{{ entry.1|cu }}</td>
+        </tr>
+        {{ endfor }}
+    </table>
+
+    {{ next_button }}
+
+{{ endblock }}

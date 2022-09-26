@@ -1,0 +1,19 @@
+{{ block title }}
+    Practice feedback
+{{ endblock }}
+
+{{ block content }}
+
+    {{ if player.is_correct }}
+        <p>You got the practice question correct!</p>
+    {{ else }}
+        <p>The correct answer was actually 'panicked'.</p>
+    {{ endif }}
+
+    <p>You will receive no feedback for the remaining questions.</p>
+
+    {{ next_button }}
+
+{{ endblock }}
+
+

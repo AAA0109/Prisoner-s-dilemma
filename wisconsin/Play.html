@@ -1,0 +1,107 @@
+{{ block title}}
+Progress: <span id="task-progress"></span> / {{ C.NUM_TRIALS }}
+{{ endblock }}
+
+{{ block content }}
+
+<style>
+    .wisc-card {
+        width: 10rem;
+        height: 14rem;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .wisc-img {
+        display: block;
+    }
+
+    #feedback {
+        font-size: x-large;
+    }
+</style>
+
+<div class="container">
+
+    <p id="feedback"></p>
+
+    <div class="row">
+        {{ for deck_number in deck_numbers }}
+        <div class="col">
+            <button type="button" onclick="selectDeck(this)" value="{{ deck_number }}" class="btn-card">
+                <!-- it's just a coincidence that we use the bootstrap 'card' element to represent a card :) -->
+                <div class="card wisc-card">
+                    <div class="card-body" id="deck-{{deck_number}}">
+                    </div>
+                </div>
+            </button>
+        </div>
+        {{ endfor }}
+
+    </div>
+
+    <br>
+    <p>Match the below card to one of the above cards.</p>
+    <div class="card wisc-card">
+        <div class="card-body" id="test-card">
+        </div>
+    </div>
+
+    <br><br>
+    {{ include 'wisconsin/instructions.html' }}
+</div>
+
+<script>
+
+    let buttons = document.getElementsByClassName('btn-card');
+    let msgProgress = document.getElementById('task-progress');
+    let msgFeedback = document.getElementById('feedback');
+
+    function selectDeck(btn) {
+        liveSend({'deck_number': parseInt(btn.value)});
+        for (let btn of buttons) {
+            btn.disabled = 'disabled';
+        }
+    }
+
+    function makeCardContent({number, shape, color}) {
+        let images = [];
+        for (let i = 0; i < number; i++) {
+            let image = `<img src="/static/wisconsin/${shape}-${color}.svg" width="50em" class="wisc-img">`;
+            images.push(image);
+        }
+        return images.join('');
+    }
+
+    function liveRecv(data) {
+        if ('finished' in data) {
+            document.getElementById('form').submit();
+            return;
+        }
+        if ('feedback' in data) {
+            msgFeedback.innerHTML = data.feedback;
+        }
+        if ('decks' in data) {
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`deck-${i}`).innerHTML = makeCardContent(data.decks[i])
+            }
+        }
+        if ('test_card' in data) {
+            document.getElementById(`test-card`).innerHTML = makeCardContent(data.test_card);
+        }
+
+        msgProgress.innerHTML = data.num_trials;
+
+        for (let btn of buttons) {
+            btn.disabled = '';
+        }
+
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+
+</script>
+
+{{ endblock }}

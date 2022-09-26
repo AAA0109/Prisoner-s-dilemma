@@ -1,0 +1,25 @@
+{{ block title }}
+Ultimatum game
+{{ endblock }}
+{{ block content }}
+
+<p>
+    This is an ultimatum game.
+    You are Player 1. You have an endowment of {{ C.ENDOWMENT }}.
+    You can offer any portion of this to Player 2.
+    If Player 2 accepts your offer, you both get paid according to your split.
+    If Player 2 rejects the offer, you both get paid nothing.
+</p>
+
+<p>
+    <i>
+        What's special about this game is that
+        rather than playing with another player live, you will be paired with someone
+        who already played earlier.
+        If nobody already played earlier, you will start a new group.
+    </i>
+</p>
+
+{{ next_button }}
+
+{{ endblock }}

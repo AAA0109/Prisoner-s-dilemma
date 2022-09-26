@@ -1,0 +1,67 @@
+{{ block title }}
+Auction
+{{ endblock }}
+{{ block content }}
+
+<p>This is an auction for a Ronaldo autographed jersey.</p>
+
+
+<table class="table">
+    <tr>
+        <th>Highest bid</th>
+        <td id="highest-bid"></td>
+    </tr>
+    <tr>
+        <th>Make new bid</th>
+        <td>
+            <input type="number" id="input-bid">
+            <button type="button" onclick="sendBid()">Make new bid</button>
+        </td>
+    </tr>
+</table>
+
+
+<script>
+    let bidInput = document.getElementById('input-bid');
+    let highestBidDiv = document.getElementById('highest-bid');
+
+    bidInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            sendBid();
+        }
+    });
+
+    function sendBid() {
+        let bid = parseInt(bidInput.value);
+        if (isNaN(bid)) return;
+        liveSend({'bid': bid})
+        bidInput.value = '';
+    }
+
+
+    function cu(amount) {
+        return `${amount} points`;
+    }
+
+    function liveRecv(data) {
+        // javascript destructuring assignment
+        let {is_new_high_bid, highest_bid, highest_bidder} = data;
+        let highestBidderLabel = (highest_bidder === js_vars.my_id) ? 'Me' : `Player ${highest_bidder}`;
+
+        highestBidDiv.innerText = `${cu(highest_bid)} (${highestBidderLabel})`;
+
+        if (is_new_high_bid) {
+            highestBidDiv.style.backgroundColor = 'lightgreen';
+            setTimeout(function () {
+                highestBidDiv.style.backgroundColor = '';
+            }, 1000);
+        }
+    }
+
+    window.addEventListener('DOMContentLoaded', (event) => {
+        liveSend({});
+    });
+
+</script>
+
+{{ endblock }}

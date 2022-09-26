@@ -1,0 +1,19 @@
+{{ block title }}
+Results
+{{ endblock }}
+
+{{ block content }}
+
+<p>
+    The door with the prize was {{ player.door_with_prize }}.
+    {{ if player.is_winner }}
+    You won!
+    {{ else }}
+    Better luck next time.
+    {{ endif }}
+</p>
+
+
+{{ endblock }}
+
+

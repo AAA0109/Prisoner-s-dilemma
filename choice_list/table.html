@@ -1,0 +1,23 @@
+<table class="table table-striped">
+    <tr>
+        <th></th>
+        <th>Or...</th>
+        <th></th>
+    </tr>
+    {{ for t in trials }}
+    <tr>
+        <td>
+            {{ t.sure_payoff }} with a probability of 100%
+        </td>
+        <td>
+            {{ if not is_results }}
+            <input type="radio" name="{{ t.id }}" value="0" required onclick="sendPref(this)">
+            <input type="radio" name="{{ t.id }}" value="1" required onclick="sendPref(this)">
+            {{ endif }}
+        </td>
+        <td>
+            {{ t.lottery_high }} with a probability of {{ t.probability_percent }}%, {{ t.lottery_low }} otherwise.
+        </td>
+    </tr>
+    {{ endfor }}
+</table>

@@ -1,0 +1,24 @@
+{{ block styles }}
+<style>
+    .otree-timer {
+        display: none;
+    }
+</style>
+{{ endblock }}
+{{ block content }}
+
+<div class="container">
+    <div class="card">
+        <h4 class="card-header">
+            Please wait
+        </h4>
+        <div class="card-body">
+            <p>Waiting for others to decide</p>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ endblock }}

@@ -1,0 +1,75 @@
+{{ block title }}
+Voting
+{{ endblock }}
+{{ block content }}
+
+<p>
+    How many points should your team contribute to the shared pool?
+    Once a majority agree on an amount,
+    you can proceed to the next page.
+</p>
+
+<table class="table table-striped">
+    <tr>
+        <th>Choice</th>
+        <th>My vote</th>
+        <th>Voters</th>
+    </tr>
+    {{ for choice in C.CHOICES }}
+    <tr>
+        <th>{{ choice }} points</th>
+        <td>
+            <input type="radio" name="my-vote" value="{{ choice }}" id="radio-{{ choice }}" onclick="vote(this)">
+        </td>
+        <td>
+            <ul id="votes-for-{{ choice }}" class="clear-on-redraw"></ul>
+        </td>
+    </tr>
+    {{ endfor }}
+</table>
+<h4>Undecided players</h4>
+<ul id="undecided" class="clear-on-redraw"></ul>
+
+<h4>Chat with teammates</h4>
+{{ chat }}
+
+<script>
+    let redrawableNodes = document.getElementsByClassName('clear-on-redraw');
+
+    function vote(btn) {
+        liveSend({vote: parseInt(btn.value)});
+    }
+
+    function liveRecv(data) {
+        if ('finished' in data) {
+            document.getElementById('form').submit();
+        }
+
+        if ('votes' in data) {
+            for (let ele of redrawableNodes) {
+                ele.innerHTML = '';
+            }
+            for (let [id_in_group, vote] of data.votes) {
+                let playerName = `Participant ${id_in_group}`;
+                let isMe = id_in_group === js_vars.my_id;
+                let isNull = vote === null;
+                if (isMe) {
+                    playerName += ' (me)';
+                    if (!isNull) {
+                        document.getElementById(`radio-${vote}`).checked = true;
+                    }
+                }
+                let bulletListId = isNull ? 'undecided' : `votes-for-${vote}`;
+                let bulletList = document.getElementById(bulletListId);
+                bulletList.innerHTML += `<li>${playerName}</li>`;
+            }
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({});
+    });
+
+</script>
+
+{{ endblock }}

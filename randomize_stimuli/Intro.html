@@ -1,0 +1,27 @@
+{{ block title }}
+  Intro
+{{ endblock }}
+{{ block content }}
+
+  <p>
+    {{ doc }}
+  </p>
+
+  <p>
+    For this example,
+    this session has 2 types of questions.
+    The first type is about foods.
+    The second type is about drinks.
+  </p>
+
+  <p>
+    The ordering algorithm for this participant has been chosen randomly:
+  </p>
+
+  <pre>
+  {{ player.ordering_description }}
+  </pre>
+
+  <p>When you are ready to start, press the button below.</p>
+  <button class="btn btn-primary">Start</button>
+{{ endblock }}

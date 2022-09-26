@@ -1,0 +1,31 @@
+{{ block title }}Results{{ endblock }}
+{{ block content }}
+
+    <table class="table">
+        <tr>
+            <th>Your contribution</th>
+            <td>{{ player.contribution }}</td>
+        </tr>
+        <tr>
+            <th>Group total contribution</th>
+            <td>{{ group.total_contribution }}</td>
+        </tr>
+        <tr>
+            <th>Group individual share</th>
+            <td>{{ group.individual_share }}</td>
+        </tr>
+        <tr>
+            <th>Punishment received</th>
+            <td>{{ player.punishment_received }}</td>
+        </tr>
+        <tr>
+            <th>Self cost of punishment</th>
+            <td>{{ player.cost_of_punishing }}</td>
+        </tr>
+        <tr>
+            <th>Your payoff</th>
+            <td>{{ player.payoff }}</td>
+        </tr>
+    </table>
+
+{{ endblock }}
