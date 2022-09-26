@@ -1,0 +1,56 @@
+{{ block content }}
+
+<div id="wait" style="display: none" class="mb-5">
+    <p class="text-center">
+        Waiting for the other player to decide...<br>
+        Other player is deciding first or second.
+    </p>
+    <progress style="width: 100%"></progress>
+</div>
+
+<div id="decide" style="display: none">
+    <h3 class="text-center">Please decide: <span class="ml-5" id="other-result"></span></h3>
+    <p>You have the opportunity to decide if you want to choose first or second.<br>
+        Once you have made your decision, the other participant will be informed whether they are choosing first or second and will also be informed that it was you who decided this.</p>
+    <div class="d-flex justify-content-center">
+        <button style="width: 100px;" class="btn btn-primary mx-3" type="button" onclick="choose(1)">
+            First
+        </button>
+        <button style="width: 100px;" class="btn btn-primary mx-3" type="button" onclick="choose(2)">
+            Second
+        </button>
+    </div>
+</div>
+
+{{ include C.INSTRUCTIONS_TEMPLATE }}
+
+
+<script>
+    let waitDiv = document.getElementById('wait');
+    let decideDiv = document.getElementById('decide');
+
+    if (js_vars.my_id == 1) show(decideDiv);
+    else show(waitDiv)
+
+    function choose(turn) {
+        liveSend({ type: 'turn', turn });
+    }
+
+    function show(ele) {
+        for (let div of [waitDiv, decideDiv]) {
+            div.style.display = (div === ele) ? 'block' : 'none';
+        }
+    }
+
+    function liveRecv(data) {
+        console.log('liveRecv', JSON.stringify(data));
+        let type = data.type;
+        switch (type) {
+        case 'finished':
+            document.getElementById('form').submit();
+            break;
+        }
+    }
+</script>
+
+{{ endblock }}

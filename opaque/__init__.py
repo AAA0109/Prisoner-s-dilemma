@@ -3,11 +3,11 @@ from otree.api import *
 import random
 
 doc = """
-Prisoner's dilemma (Baseline)
+Prisoner's dilemma (Opaque)
 """
 
 class C(BaseConstants):
-    NAME_IN_URL = 'baseline'
+    NAME_IN_URL = 'opaque'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 10
 
@@ -44,7 +44,7 @@ class Game(ExtraModel):
     choice2 = models.CurrencyField()
     payoff1 = models.CurrencyField()
     payoff2 = models.CurrencyField()
-
+    
 def getChoiceFromBool(choice):
     if choice:
         return 'A'
@@ -93,6 +93,21 @@ def live_method(player, data):
         )
     }
 
+def live_turn_method(player, data):
+    group = player.group
+    my_id = player.id_in_group
+
+    if (my_id != 1):
+        return
+    if data['type'] == 'turn':
+        group.first_player = data['turn']
+        group.player_turn = group.first_player
+    return {
+        0: dict(
+            type = 'finished'
+        )
+    }
+
 class WaitToStart(WaitPage):
     @staticmethod
     def after_all_players_arrive(group: Group):
@@ -106,7 +121,12 @@ class Play(Page):
     def js_vars(player: Player):
         return dict(my_id = player.id_in_group, first_player = player.group.first_player)
 
+class Turn(Page):
+    live_method = live_turn_method
+    def js_vars(player: Player):
+        return dict(my_id = player.id_in_group)
+
 class Results(Page):
     pass
 
-page_sequence = [WaitToStart, Play, Results]
+page_sequence = [WaitToStart, Turn, Play, Results]

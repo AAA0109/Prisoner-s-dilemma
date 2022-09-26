@@ -37,6 +37,8 @@
 
     if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = 'You are first chooser.';
     else turnDiv.innerHTML = 'You are second chooser.';
+    if (js_vars.my_id == 1) turnDiv.innerHTML += ' (You decided this.)';
+    if (js_vars.my_id == 2) turnDiv.innerHTML += ' (Other player decided this.)';
 
     console.log(js_vars.my_id, js_vars)
 
