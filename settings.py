@@ -4,19 +4,19 @@ SESSION_CONFIGS = [
     dict(
         name='baseline',
         display_name="Prisoner's Dilemma (Baseline)",
-        num_demo_participants=20,
+        num_demo_participants=2,
         app_sequence=['baseline'],
     ),
     dict(
         name='opaque',
         display_name="Prisoner's Dilemma (Opaque)",
-        num_demo_participants=20,
+        num_demo_participants=2,
         app_sequence=['opaque'],
     ),
     dict(
         name='transparent',
         display_name="Prisoner's Dilemma (Transparent)",
-        num_demo_participants=20,
+        num_demo_participants=2,
         app_sequence=['transparent'],
     ),
 ]
