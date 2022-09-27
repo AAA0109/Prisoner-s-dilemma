@@ -26,10 +26,10 @@ SESSION_CONFIGS = [
         app_sequence=['transparent'],
     ),
     dict(
-        name='questionnaire',
-        display_name="Prisoner's Dilemma (otree-questionnaire)",
+        name='question',
+        display_name="Questionnaire",
         num_demo_participants=2,
-        app_sequence=['questionnaire'],
+        app_sequence=['question'],
     ),
 ]
 
