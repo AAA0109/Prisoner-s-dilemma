@@ -24,14 +24,11 @@ class Introduction(Page):
 class Survey1(Page):
     form_model = 'player'
     form_fields = [
-        'item1A',
-        'item1B',
-        'item1C',
-        'item1D',
-        'item1E',
-        'item1F',
-        'item1G',
-        'item1H'
+        'risk_attitude',
+        'trust_degree',
+        'bat_ball',
+        'machine_widget',
+        'lake_lily_pad',
     ]
 
     def is_displayed(self):
@@ -39,7 +36,7 @@ class Survey1(Page):
 
     def get_form_fields(self):
         fields = self.form_fields
-        random.shuffle(fields)
+        # random.shuffle(fields)
         return fields
 
 #    def progress(self):
@@ -57,16 +54,15 @@ class Survey1(Page):
 class Survey2(Page):
     form_model = 'player'
     form_fields = [
-        'item2A',
-        'item2B',
-        'item2C',
-        'item2D',
-        'item2E',
-        'item2F',
-        'item2G',
-        'item2H',
-        'item2I',
-        'item2J'
+        'mach_1',
+        'mach_2',
+        'mach_3',
+        'mach_4',
+        'mach_5',
+        'mach_6',
+        'mach_7',
+        'mach_8',
+        'mach_9'
     ]
 
     def is_displayed(self):
@@ -92,20 +88,47 @@ class Survey2(Page):
 class Survey3(Page):
     form_model = 'player'
     form_fields = [
-        'item3A',
-        'item3B',
-        'item3C',
-        'item3D',
-        'item3E',
-        'item3F',
-        'item3G',
-        'item3H',
-        'item3I',
-        'item3J'
+        'narc_2',
+        'narc_3',
+        'narc_4',
+        'narc_5',
+        'narc_6',
+        'narc_7',
+        'narc_8',
+        'narc_9'
     ]
 
     def is_displayed(self):
         return self.round_number == self.participant.vars['surveys_rounds']['3']
+
+    def get_form_fields(self):
+        fields = self.form_fields
+        random.shuffle(fields)
+        return fields
+
+    def vars_for_template(self):
+        #curpageindex = page_sequence.index(type(self)) - 1
+        #progress = curpageindex / len(page_sequence) * 100
+        return {
+            'progress': progress(self)
+        }
+
+class Survey4(Page):
+    form_model = 'player'
+    form_fields = [
+        'psych_1',
+        'psych_2',
+        'psych_3',
+        'psych_4',
+        'psych_5',
+        'psych_6',
+        'psych_7',
+        'psych_8',
+        'psych_9'
+    ]
+
+    def is_displayed(self):
+        return self.round_number == self.participant.vars['surveys_rounds']['4']
 
     def get_form_fields(self):
         fields = self.form_fields
@@ -146,10 +169,11 @@ class Demographics(Page):
 
 page_sequence = [
     Introduction,
-    # Survey1,
-    # Survey2,
-    # Survey3,
-    Demographics
+    Demographics,
+    Survey1,
+    Survey2,
+    Survey3,
+    Survey4
 ]
 
 pages_per_round = len(page_sequence)

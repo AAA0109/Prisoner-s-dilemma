@@ -16,9 +16,9 @@ Questionnaire
 class Constants(BaseConstants):
     name_in_url = 'Questionnaire'
     players_per_group = None
-    surveys = ['1', '2', '3']
+    surveys = ['1', '2', '3', '4']
     num_rounds = len(surveys)
-    StandardChoices=[
+    Choices=[
         [1, 'Disagree strongly'],
         [2, 'Disagree moderately'],
         [3, 'Disagree a little'],
@@ -27,15 +27,6 @@ class Constants(BaseConstants):
         [6, 'Agree moderately'],
         [7, 'Agree strongly'],
     ]
-
-    #Survey1
-    Survey1Choices=StandardChoices
-
-    #Survey2
-    Survey2Choices=StandardChoices
-
-    #Survey3
-    Survey3Choices=StandardChoices
 
 class Subsession(BaseSubsession):
     def creating_session(self):
@@ -74,7 +65,7 @@ class Player(BasePlayer):
         ]
     )
 
-    age = models.IntegerField(label="Please enter your age.", min=14, max=90, blank=True)
+    age = models.IntegerField(label="Please enter your age.", min=14, max=125, blank=True)
 
     studies = models.IntegerField(
         label="Please estimate how many studies you have participated in (excluding this study)",
@@ -122,120 +113,140 @@ class Player(BasePlayer):
         initial=None
     )
 
-    #Survey1
-    item1A = models.IntegerField(
-        label='Statement 1A',
-        choices=Constants.Survey1Choices
+    risk_attitude = models.IntegerField(
+        label="How willing are you in general to take risks on a scale from 0 (not willing to take risks at all) to 10 "
+              "(highly willing to take risks)?",
+        choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
     )
-    item1B = models.IntegerField(
-        label='Statement 1B',
-        choices=Constants.Survey1Choices
+    trust_degree = models.IntegerField(
+        label="How much do you in general trust other people on a scale from 0 (I don’t trust other people at all) to "
+              "10 (I fully trust other people)?",
+        choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
     )
-    item1C = models.IntegerField(
-        label='Statement 1C',
-        choices=Constants.Survey1Choices
+    bat_ball = models.IntegerField(
+        label="A bat and a ball cost 1.10 dollars in total. The bat costs 1.00 dollar more than the ball. How much "
+              "does the ball cost? Your answer (in cents) e.g. $100 = 10000 cents:",
+        min=0
     )
-    item1D = models.IntegerField(
-        label='Statement 1D',
-        choices=Constants.Survey1Choices
+    machine_widget = models.IntegerField(
+        label="If it takes 5 machines 5 minutes to make 5 widgets, how long would it take 100 machines to make 100 "
+              "widgets? Your answer (in minutes):",
+        min=0
     )
-    item1E = models.IntegerField(
-        label='Statement 1E',
-        choices=Constants.Survey1Choices
-    )
-    item1F = models.IntegerField(
-        label='Statement 1F',
-        choices=Constants.Survey1Choices
-    )
-    item1G = models.IntegerField(
-        label='Statement 1G',
-        choices=Constants.Survey1Choices
-    )
-    item1H = models.IntegerField(
-        label='Statement 1H',
-        choices=Constants.Survey1Choices
+    lake_lily_pad = models.IntegerField(
+        label="In a lake, there is a patch of lily pads. Every day, the patch doubles in size. If it takes 48 days for "
+              "the patch to cover the entire lake, how long would it take for the patch to cover half of the lake? "
+              "Your answer (in number of days):",
+        min=0
     )
 
-    #Survey2
-    item2A = models.IntegerField(
-        label='Statement 2A',
-        choices=Constants.Survey2Choices
+    mach_1 = models.IntegerField(
+        label = "It’s not wise to tell your secrets.",
+        choices=Constants.Choices,
     )
-    item2B = models.IntegerField(
-        label='Statement 2B',
-        choices=Constants.Survey2Choices
+    mach_2 = models.IntegerField(
+        label="I like to use clever manipulation to get my way.",
+        choices=Constants.Choices,
     )
-    item2C = models.IntegerField(
-        label='Statement 2C',
-        choices=Constants.Survey2Choices
+    mach_3 = models.IntegerField(
+        label="Whatever it takes, you must get the important people on your side.",
+        choices=Constants.Choices,
     )
-    item2D = models.IntegerField(
-        label='Statement 2D',
-        choices=Constants.Survey2Choices
+    mach_4 = models.IntegerField(
+        label="Avoid direct conflict with others because they maybe useful in the future.",
+        choices=Constants.Choices,
     )
-    item2E = models.IntegerField(
-        label='Statement 2E',
-        choices=Constants.Survey2Choices
+    mach_5 = models.IntegerField(
+        label="It’s wise to keep track of information that you can use against people later.",
+        choices=Constants.Choices,
     )
-    item2F = models.IntegerField(
-        label='Statement 2F',
-        choices=Constants.Survey2Choices
+    mach_6 = models.IntegerField(
+        label="You should wait for the right time to get back at people.",
+        choices=Constants.Choices,
     )
-    item2G = models.IntegerField(
-        label='Statement 2G',
-        choices=Constants.Survey2Choices
+    mach_7 = models.IntegerField(
+        label="there are things you should hide from other people to preserve your reputation.",
+        choices=Constants.Choices,
     )
-    item2H = models.IntegerField(
-        label='Statement 2H',
-        choices=Constants.Survey2Choices
+    mach_8 = models.IntegerField(
+        label="Make sure your plans benefit yourself, not others.",
+        choices=Constants.Choices,
     )
-    item2I = models.IntegerField(
-        label='Statement 2I',
-        choices=Constants.Survey2Choices
+    mach_9 = models.IntegerField(
+        label="Most people can be .",
+        choices=Constants.Choices,
     )
-    item2J = models.IntegerField(
-        label='Statement 2J',
-        choices=Constants.Survey2Choices
+    narc_1 = models.IntegerField(
+        label="People see me as a natural leader.",
+        choices=Constants.Choices,
     )
-
-    #Survey3
-    item3A = models.IntegerField(
-        label='Statement 3A',
-        choices=Constants.Survey3Choices
+    narc_2 = models.IntegerField(
+        label="I hate being the center of attention",
+        choices=Constants.Choices,
     )
-    item3B = models.IntegerField(
-        label='Statement 3B',
-        choices=Constants.Survey3Choices
+    narc_3 = models.IntegerField(
+        label="Many group activities tend to be dull without me.",
+        choices=Constants.Choices,
     )
-    item3C = models.IntegerField(
-        label='Statement 3C',
-        choices=Constants.Survey3Choices
+    narc_4 = models.IntegerField(
+        label="I know that I am special because everyone keeps telling me so.",
+        choices=Constants.Choices,
     )
-    item3D = models.IntegerField(
-        label='Statement 3D',
-        choices=Constants.Survey3Choices
+    narc_5 = models.IntegerField(
+        label="I like to get acquainted with important people.",
+        choices=Constants.Choices,
     )
-    item3E = models.IntegerField(
-        label='Statement 3E',
-        choices=Constants.Survey3Choices
+    narc_6 = models.IntegerField(
+        label="I feel embarrassed if someone compliments me.",
+        choices=Constants.Choices,
     )
-    item3F = models.IntegerField(
-        label='Statement 3F',
-        choices=Constants.Survey3Choices
+    narc_7 = models.IntegerField(
+        label="I have been compared to famous people.",
+        choices=Constants.Choices,
     )
-    item3G = models.IntegerField(
-        label='Statement 3G',
-        choices=Constants.Survey3Choices
+    narc_8 = models.IntegerField(
+        label="I am an average person.",
+        choices=Constants.Choices,
     )
-    item3H = models.IntegerField(
-        label='Statement 3H',
-        choices=Constants.Survey3Choices
+    narc_9 = models.IntegerField(
+        label="I insist on getting the respect I deserve.",
+        choices=Constants.Choices,
     )
-    item3I = models.IntegerField(
-        label='Statement 3I',
-        choices=Constants.Survey3Choices
+    psych_1 = models.IntegerField(
+        label="I like to get revenge on authorities.",
+        choices=Constants.Choices,
     )
-    item3J = models.IntegerField(
-        label='Statement 3J',
-        choices=Constants.Survey3Choices
+    psych_2 = models.IntegerField(
+        label="I avoid dangerous situations.",
+        choices=Constants.Choices,
+    )
+    psych_3 = models.IntegerField(
+        label="Payback needs to be quick and nasty",
+        choices=Constants.Choices,
+    )
+    psych_4 = models.IntegerField(
+        label="People often say I’m out of control.",
+        choices=Constants.Choices,
+    )
+    psych_5 = models.IntegerField(
+        label="It’s true that I can be mean to others",
+        choices=Constants.Choices,
+    )
+    psych_6 = models.IntegerField(
+        label="People who mess with me always regret it",
+        choices=Constants.Choices,
+    )
+    psych_7 = models.IntegerField(
+        label="I have never gotten into trouble with the law.",
+        choices=Constants.Choices,
+    )
+    psych_8 = models.IntegerField(
+        label="I enjoy having sex with people I hardly know",
+        choices=Constants.Choices,
+    )
+    psych_9 = models.IntegerField(
+        label="I’ll say anything to get what I want",
+        choices=Constants.Choices,
     )

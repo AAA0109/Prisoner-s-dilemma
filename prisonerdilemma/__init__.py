@@ -13,7 +13,7 @@ class C(BaseConstants):
 
     PAYOFFA = cu(2)
     PAYOFFB = cu(4)
-    PAYOFFC = cu(7)
+    PAYOFFC = cu(6)
     PAYOFFD = cu(9)
 
     PAYOFF_MATRIX = {
