@@ -1,0 +1,29 @@
+{{ block title }}
+{{ endblock }}
+
+{{ block content }}
+
+    <div class="card">
+        <div class="card-header">
+            <h3>The game ended.</h3>
+        </div>
+        <div class="card-body">
+            Your choice is <b>{{player.choice}}</b> AND Other's choice is <b>{{player.other_choice}}</b><br>
+            You earn <b>{{ player.payoff }}</b> in this game.<br>
+            Your total payoff is <b>{{ participant.payoff }}</b>.
+
+            <div class="d-flex justify-content-center mt-3">{{ next_button }}</div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        {{ chat }}
+    </div>
+    
+    {{ include C.INSTRUCTIONS_TEMPLATE }}
+
+<script>
+</script>
+{{ endblock }}
+
+

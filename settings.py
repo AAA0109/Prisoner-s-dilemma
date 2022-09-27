@@ -2,6 +2,12 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
+        name='prisonerdilemma',
+        display_name="Prisoner's Dilemma",
+        num_demo_participants=20,
+        app_sequence=['prisonerdilemma'],
+    ),
+    dict(
         name='baseline',
         display_name="Prisoner's Dilemma (Baseline)",
         num_demo_participants=2,
@@ -18,6 +24,12 @@ SESSION_CONFIGS = [
         display_name="Prisoner's Dilemma (Transparent)",
         num_demo_participants=2,
         app_sequence=['transparent'],
+    ),
+    dict(
+        name='questionnaire',
+        display_name="Prisoner's Dilemma (otree-questionnaire)",
+        num_demo_participants=2,
+        app_sequence=['questionnaire'],
     ),
 ]
 

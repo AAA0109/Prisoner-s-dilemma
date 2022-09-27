@@ -1,0 +1,82 @@
+{{ block content }}
+
+<div class="text-center">
+    <h3 id="turn">You are first chooser.</h3>
+</div>
+
+<div id="wait" style="display: none" class="mb-5">
+    <p class="text-center">
+        Waiting for the other player to decide...
+    </p>
+    <progress style="width: 100%"></progress>
+</div>
+
+<div id="decide" style="display: none">
+    <h3 class="text-center">Please decide: <span class="ml-5" id="other-result"></span></h3>
+    <div class="d-flex justify-content-center">
+        <button class="btn btn-primary mx-3" type="button" onclick="choose(true)">
+            A
+        </button>
+        <button class="btn btn-primary mx-3" type="button" onclick="choose(false)">
+            B
+        </button>
+    </div>
+</div>
+
+<div class="mt-5">
+    {{ chat }}
+</div>
+
+{{ include C.INSTRUCTIONS_TEMPLATE }}
+
+<script>
+    let waitDiv = document.getElementById('wait');
+    let decideDiv = document.getElementById('decide');
+    let resultDiv = document.getElementById('other-result');
+    let turnDiv = document.getElementById('turn');
+
+    if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = 'You are first chooser.';
+    else turnDiv.innerHTML = 'You are second chooser.';
+    if (js_vars.my_id == 1 && js_vars.mode) turnDiv.innerHTML += ' (You decided this.)';
+    if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML += ' (Other player decided this.)';
+
+    console.log(js_vars.my_id, js_vars)
+
+    function choose(choice) {
+        liveSend({ type: 'choice', choice });
+    }
+
+    function show(ele) {
+        for (let div of [waitDiv, decideDiv]) {
+            div.style.display = (div === ele) ? 'block' : 'none';
+        }
+    }
+
+    function liveRecv(data) {
+        console.log('liveRecv', JSON.stringify(data));
+        let type = data.type;
+        switch (type) {
+        case 'status':
+            if (data.finished) {
+                document.getElementById('form').submit();
+                return;
+            }
+            let is_waiting = data.should_wait;
+            if (is_waiting) {
+                show(waitDiv)
+            } else {
+                show(decideDiv)
+            }
+            if (data.other_result !== null) {
+                resultDiv.innerHTML = `(Other player chose <b>${data.other_result ? 'A' : 'B'})</b>`;
+            }
+            break;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({'type': 'init'});
+    });
+</script>
+
+{{ endblock }}

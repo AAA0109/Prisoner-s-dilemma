@@ -1,0 +1,85 @@
+{{ block content }}
+
+<div id="wait" style="display: none" class="mb-5">
+    <p id="wait-instruction" class="text-center"></p>
+    <progress style="width: 100%"></progress>
+</div>
+
+<div id="decide" style="display: none">
+    <h3 class="text-center">Please decide: <span class="ml-5" id="other-result"></span></h3>
+    <p id="choice-instruction"></p>
+    <div class="d-flex justify-content-center">
+        <button style="width: 100px;" class="btn btn-primary mx-3" type="button" onclick="choose(1)">
+            First
+        </button>
+        <button style="width: 100px;" class="btn btn-primary mx-3" type="button" onclick="choose(2)">
+            Second
+        </button>
+    </div>
+</div>
+
+{{ include C.INSTRUCTIONS_TEMPLATE }}
+
+
+<script>
+    console.log(js_vars);
+    if (js_vars.mode === 1) {
+        document.getElementById('form').submit();
+    }
+
+    let waitDiv = document.getElementById('wait');
+    let decideDiv = document.getElementById('decide');
+    let choiceDiv = document.getElementById('choice-instruction');
+    let waitInstDiv = document.getElementById('wait-instruction');
+
+    if (js_vars.my_id == 1) show(decideDiv);
+    else show(waitDiv)
+
+    function choose(turn) {
+        liveSend({ type: 'turn', turn });
+    }
+
+    function show(ele) {
+        for (let div of [waitDiv, decideDiv]) {
+            div.style.display = (div === ele) ? 'block' : 'none';
+        }
+    }
+
+    function init(mode) {
+        if (mode == 0) {
+            document.getElementById('form').submit();
+            return;
+        }
+        if (mode == 1) {
+            choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
+                Once you have made your decision, the other participant will be informed whether they are choosing first or second and will never learn that it was you who decided this.`;
+            waitInstDiv.innerHTML = `Waiting for the system to decide...<br>
+                The system is deciding who the first chooser is. This may takes a moment.`;
+        }
+        if (mode == 2) {
+            choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
+                Once you have made your decision, the other participant will be informed whether they are choosing first or second and will also be informed that it was you who decided this.`
+            waitInstDiv.innerHTML = `Waiting for the other player to decide...<br>
+                Other player is deciding first or second.`;
+        }
+    }
+
+    function liveRecv(data) {
+        console.log('liveRecv', JSON.stringify(data));
+        let type = data.type;
+        switch (type) {
+        case 'init':
+            init(data.mode);
+            break;
+        case 'finished':
+            document.getElementById('form').submit();
+            break;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function (event) {
+        liveSend({'type': 'init'});
+    });
+</script>
+
+{{ endblock }}
