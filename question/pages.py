@@ -66,6 +66,7 @@ class Survey2(Page):
 class Survey3(Page):
     form_model = 'player'
     form_fields = [
+        'narc_1',
         'narc_2',
         'narc_3',
         'narc_4',

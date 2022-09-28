@@ -18,15 +18,16 @@ class Constants(BaseConstants):
     players_per_group = None
     surveys = ['1', '2', '3', '4']
     num_rounds = len(surveys)
-    Choices=[
-        [1, 'Disagree strongly'],
-        [2, 'Disagree moderately'],
-        [3, 'Disagree a little'],
-        [4, 'Neither agree nor disagree'],
-        [5, 'Agree a little'],
-        [6, 'Agree moderately'],
-        [7, 'Agree strongly'],
-    ]
+    # Choices=[
+    #     [1, 'Disagree strongly'],
+    #     [2, 'Disagree moderately'],
+    #     [3, 'Disagree a little'],
+    #     [4, 'Neither agree nor disagree'],
+    #     [5, 'Agree a little'],
+    #     [6, 'Agree moderately'],
+    #     [7, 'Agree strongly'],
+    # ]
+    Choices = [1, 2, 3, 4, 5]
 
 class Subsession(BaseSubsession):
     pass
@@ -177,7 +178,7 @@ class Player(BasePlayer):
         choices=Constants.Choices,
     )
     mach_9 = models.IntegerField(
-        label="Most people can be .",
+        label="Most people can be manipulated.",
         choices=Constants.Choices,
     )
     narc_1 = models.IntegerField(
