@@ -9,7 +9,7 @@ Prisoner's dilemma
 class C(BaseConstants):
     NAME_IN_URL = 'prisonerdilemma'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 2
+    NUM_ROUNDS = 1
 
     PAYOFFA = cu(2)
     PAYOFFB = cu(4)
@@ -35,8 +35,9 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    choice = models.LongStringField(initial='A')
-    other_choice = models.LongStringField(initial='B')
+    choice = models.LongStringField(initial='')
+    other_choice = models.LongStringField(initial='')
+    question_for_first = models.IntegerField(initial=-1)
     pass
 
 class Game(ExtraModel):
@@ -59,6 +60,8 @@ def live_method(player, data):
 
     if data['type'] == 'choice':
         choice_field = 'choice{}'.format(my_id)
+        if 'answer' in data:
+            player.question_for_first = data['answer']
 
         if my_id != group.player_turn:
             return

@@ -23,6 +23,23 @@
     </div>
 </div>
 
+<div id="question" style="display: none">
+    <h3 class="text-center">Please answer: </h3>
+    <table class="table">    
+        <tbody><tr>
+            <td>
+                <label for="id_answer">What is the probability you think that player 2 will cooperate?</label>
+            </td>
+            <td>
+                <input type="number" class="form-control" id="id_answer" max="100" min="0" name="answer" value="">
+            </td>
+        </tr>
+    </tbody></table>
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-primary mt-3" onclick="answer_first()">Next</button>
+    </div>
+</div>
+
 <div class="mt-5">
     {{ chat }}
 </div>
@@ -34,6 +51,9 @@
     let decideDiv = document.getElementById('decide');
     let resultDiv = document.getElementById('other-result');
     let turnDiv = document.getElementById('turn');
+    let questionDiv = document.getElementById('question');
+
+    let my_choice;
 
     if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = 'You are first chooser.';
     else turnDiv.innerHTML = 'You are second chooser.';
@@ -43,11 +63,25 @@
     console.log(js_vars.my_id, js_vars)
 
     function choose(choice) {
+        my_choice = choice;
+        if (js_vars.my_id == js_vars.first_player) {
+            show(questionDiv);
+            return;
+        }
         liveSend({ type: 'choice', choice });
     }
 
+    function answer_first() {
+        const answer = parseInt(document.getElementById('id_answer').value)
+        if (!answer || isNaN(answer) || answer < 0 || answer > 100) {
+            document.getElementById('id_answer').focus();
+            return;
+        }
+        liveSend({ type: 'choice', choice: my_choice, answer });
+    }
+
     function show(ele) {
-        for (let div of [waitDiv, decideDiv]) {
+        for (let div of [waitDiv, decideDiv, questionDiv]) {
             div.style.display = (div === ele) ? 'block' : 'none';
         }
     }
