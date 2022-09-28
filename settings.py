@@ -5,7 +5,7 @@ SESSION_CONFIGS = [
         name='prisonerdilemma',
         display_name="Prisoner's Dilemma",
         num_demo_participants=20,
-        app_sequence=['prisonerdilemma'],
+        app_sequence=['prisonerdilemma', 'question'],
     ),
     # dict(
     #     name='baseline',
@@ -25,12 +25,12 @@ SESSION_CONFIGS = [
     #     num_demo_participants=2,
     #     app_sequence=['transparent'],
     # ),
-    dict(
-        name='question',
-        display_name="Questionnaire",
-        num_demo_participants=20,
-        app_sequence=['question'],
-    ),
+    # dict(
+    #     name='question',
+    #     display_name="Questionnaire",
+    #     num_demo_participants=20,
+    #     app_sequence=['question'],
+    # ),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs

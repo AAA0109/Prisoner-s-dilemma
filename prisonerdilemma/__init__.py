@@ -9,7 +9,7 @@ Prisoner's dilemma
 class C(BaseConstants):
     NAME_IN_URL = 'prisonerdilemma'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 2
 
     PAYOFFA = cu(2)
     PAYOFFB = cu(4)

@@ -6,20 +6,13 @@ import json
 
 def progress(p):
     curpageindex = page_sequence.index(type(p))+1
-    progress = ((p.round_number-1)*pages_per_round+curpageindex)/tot_pages*100
+    progress = int(((p.round_number-1)*pages_per_round+curpageindex)/tot_pages*100)
     return progress
 
 class Introduction(Page):
-
-    def is_displayed(self):
-        return self.round_number == 1
-
-    #def vars_for_template(self):
-    #    curpageindex = page_sequence.index(type(self)) - 1
-    #    progress = curpageindex / tot_pages * 100
-    #    return {
-    #        'progress': progress
-    #    }
+    pass
+    # def is_displayed(self):
+    #     return self.round_number == 1
 
 class Survey1(Page):
     form_model = 'player'
@@ -31,22 +24,14 @@ class Survey1(Page):
         'lake_lily_pad',
     ]
 
-    def is_displayed(self):
-        return self.round_number == self.participant.vars['surveys_rounds']['1']
+    # def is_displayed(self):
+    #     return self.round_number == self.participant.vars['surveys_rounds']['1']
 
     def get_form_fields(self):
         fields = self.form_fields
-        # random.shuffle(fields)
         return fields
 
-#    def progress(self):
-#        curpageindex = json.loads(self.participant.vars.get('initial_page_sequence')).index(str(self.__class__.__name__)) + 1
-#        progress = curpageindex / tot_pages * 100
-#        return progress
-
     def vars_for_template(self):
-        #curpageindex = page_sequence.index(type(self)) - 1
-        #progress = curpageindex / len(page_sequence) * 100
         return {
             'progress': progress(self)
         }
@@ -65,22 +50,15 @@ class Survey2(Page):
         'mach_9'
     ]
 
-    def is_displayed(self):
-        return self.round_number == self.participant.vars['surveys_rounds']['2']
+    # def is_displayed(self):
+    #     return self.round_number == self.participant.vars['surveys_rounds']['2']
 
     def get_form_fields(self):
         fields = self.form_fields
-        random.shuffle(fields)
+        # random.shuffle(fields)
         return fields
 
-#    def progress(self):
-#        curpageindex = json.loads(self.participant.vars.get('initial_page_sequence')).index(str(self.__class__.__name__)) + 1
-#        progress = curpageindex / tot_pages * 100
-#        return progress
-
     def vars_for_template(self):
-        #curpageindex = page_sequence.index(type(self)) - 1
-        #progress = curpageindex / len(page_sequence) * 100
         return {
             'progress': progress(self)
         }
@@ -98,17 +76,15 @@ class Survey3(Page):
         'narc_9'
     ]
 
-    def is_displayed(self):
-        return self.round_number == self.participant.vars['surveys_rounds']['3']
+    # def is_displayed(self):
+    #     return self.round_number == self.participant.vars['surveys_rounds']['3']
 
     def get_form_fields(self):
         fields = self.form_fields
-        random.shuffle(fields)
+        # random.shuffle(fields)
         return fields
 
     def vars_for_template(self):
-        #curpageindex = page_sequence.index(type(self)) - 1
-        #progress = curpageindex / len(page_sequence) * 100
         return {
             'progress': progress(self)
         }
@@ -127,17 +103,15 @@ class Survey4(Page):
         'psych_9'
     ]
 
-    def is_displayed(self):
-        return self.round_number == self.participant.vars['surveys_rounds']['4']
+    # def is_displayed(self):
+    #     return self.round_number == self.participant.vars['surveys_rounds']['4']
 
     def get_form_fields(self):
         fields = self.form_fields
-        random.shuffle(fields)
+        # random.shuffle(fields)
         return fields
 
     def vars_for_template(self):
-        #curpageindex = page_sequence.index(type(self)) - 1
-        #progress = curpageindex / len(page_sequence) * 100
         return {
             'progress': progress(self)
         }
@@ -146,25 +120,23 @@ class Demographics(Page):
     form_model = 'player'
     form_fields = ['gender', 'age', 'studies', 'workexperience', 'degree', 'english']
 
-    def is_displayed(self):
-        return self.round_number == self.participant.vars['num_rounds']
+    # def is_displayed(self):
+    #     return self.round_number == self.participant.vars['demographics']
 
     def get_form_fields(self):
         fields = self.form_fields
-        random.shuffle(fields)
+        # random.shuffle(fields)
         return fields
 
-#    def progress(self):
-#            curpageindex = page_sequence.index(type(self))
-#            progress = curpageindex / tot_pages * 100
-#            return progress
-
     def vars_for_template(self):
-        #curpageindex = page_sequence.index(type(self)) - 1
-        #progress = curpageindex / len(page_sequence) * 100
         return {
             'progress': progress(self)
         }
+
+class Final(Page):
+    # def is_displayed(self):
+    #     return self.round_number == self.participant.vars['final']
+    pass
 
 
 page_sequence = [
@@ -173,8 +145,9 @@ page_sequence = [
     Survey1,
     Survey2,
     Survey3,
-    Survey4
+    Survey4,
+    Final
 ]
 
 pages_per_round = len(page_sequence)
-tot_pages = pages_per_round * Constants.num_rounds
+tot_pages = pages_per_round

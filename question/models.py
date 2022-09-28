@@ -29,13 +29,15 @@ class Constants(BaseConstants):
     ]
 
 class Subsession(BaseSubsession):
-    def creating_session(self):
-        if self.round_number == 1:
-            for p in self.get_players():
-                round_numbers = list(range(1, Constants.num_rounds + 1))
-                random.shuffle(round_numbers)
-                p.participant.vars['surveys_rounds'] = dict(zip(Constants.surveys, round_numbers))
-                p.participant.vars['num_rounds'] = Constants.num_rounds
+    pass
+    # def creating_session(self):
+    #     if self.round_number == 1:
+    #         for p in self.get_players():
+    #             round_numbers = list(range(3, Constants.num_rounds + 3))
+                # p.participant.vars['surveys_rounds'] = dict(zip(Constants.surveys, round_numbers))
+                # p.participant.vars['final'] = Constants.num_rounds + 3
+                # p.participant.vars['demographics'] = 2
+                # print(p.participant.vars)
 
     # def creating_session(self):
     #    from .pages import initial_page_sequence
