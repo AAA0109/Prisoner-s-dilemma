@@ -45,11 +45,11 @@
     }
 
     function init(mode) {
-        if (js_vars.my_id == 1) show(decideDiv);
         if (mode == 0) {
             document.getElementById('form').submit();
             return;
         }
+        if (js_vars.my_id == 1) show(decideDiv);
         if (mode == 1) {
             choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
                 Once you have made your decision, the other participant will be informed whether they are choosing first or second and will never learn that it was you who decided this.`;
