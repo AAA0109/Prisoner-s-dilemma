@@ -9,11 +9,11 @@ Prisoner's dilemma (Transparent)
 class C(BaseConstants):
     NAME_IN_URL = 'transparent'
     PLAYERS_PER_GROUP = 2
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 1
 
     PAYOFFA = cu(2)
     PAYOFFB = cu(4)
-    PAYOFFC = cu(7)
+    PAYOFFC = cu(6)
     PAYOFFD = cu(9)
 
     PAYOFF_MATRIX = {
@@ -31,11 +31,13 @@ class Subsession(BaseSubsession):
 class Group(BaseGroup):
     first_player = models.IntegerField(initial=1)
     player_turn = models.IntegerField(initial=1)
+    mode = models.IntegerField(initial=2)  # 0: baseline, 1: opaque, 2: transparent
 
 
 class Player(BasePlayer):
-    choice = models.LongStringField(initial='A')
-    other_choice = models.LongStringField(initial='B')
+    choice = models.LongStringField(initial='')
+    other_choice = models.LongStringField(initial='')
+    question_for_first = models.IntegerField(initial=-1)
     pass
 
 class Game(ExtraModel):
@@ -58,6 +60,8 @@ def live_method(player, data):
 
     if data['type'] == 'choice':
         choice_field = 'choice{}'.format(my_id)
+        if 'answer' in data:
+            player.question_for_first = data['answer']
 
         if my_id != group.player_turn:
             return
@@ -97,16 +101,16 @@ def live_turn_method(player, data):
     group = player.group
     my_id = player.id_in_group
 
-    if (my_id != 1):
-        return
+    if data['type'] == 'init':
+        if group.mode == -1:
+            group.mode = random.choice([0, 1, 2])
+        return { 0: dict( type='init', mode=group.mode ) }
     if data['type'] == 'turn':
+        if (my_id != 1):
+            return
         group.first_player = data['turn']
         group.player_turn = group.first_player
-    return {
-        0: dict(
-            type = 'finished'
-        )
-    }
+    return { 0: dict( type = 'finished' ) }
 
 class WaitToStart(WaitPage):
     @staticmethod
@@ -119,7 +123,7 @@ class Play(Page):
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id = player.id_in_group, first_player = player.group.first_player)
+        return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.group.mode)
 
 class Turn(Page):
     live_method = live_turn_method

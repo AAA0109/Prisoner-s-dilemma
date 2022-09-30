@@ -1,30 +1,30 @@
 from os import environ
 
 SESSION_CONFIGS = [
+    # dict(
+    #     name='prisonerdilemma',
+    #     display_name="Prisoner's Dilemma",
+    #     num_demo_participants=4,
+    #     app_sequence=['prisonerdilemma', 'question'],
+    # ),
     dict(
-        name='prisonerdilemma',
-        display_name="Prisoner's Dilemma",
-        num_demo_participants=4,
-        app_sequence=['prisonerdilemma', 'question'],
+        name='baseline',
+        display_name="Prisoner's Dilemma (Baseline)",
+        num_demo_participants=2,
+        app_sequence=['baseline', 'question'],
     ),
-    # dict(
-    #     name='baseline',
-    #     display_name="Prisoner's Dilemma (Baseline)",
-    #     num_demo_participants=2,
-    #     app_sequence=['baseline'],
-    # ),
-    # dict(
-    #     name='opaque',
-    #     display_name="Prisoner's Dilemma (Opaque)",
-    #     num_demo_participants=2,
-    #     app_sequence=['opaque'],
-    # ),
-    # dict(
-    #     name='transparent',
-    #     display_name="Prisoner's Dilemma (Transparent)",
-    #     num_demo_participants=2,
-    #     app_sequence=['transparent'],
-    # ),
+    dict(
+        name='opaque',
+        display_name="Prisoner's Dilemma (Opaque)",
+        num_demo_participants=2,
+        app_sequence=['opaque', 'question'],
+    ),
+    dict(
+        name='transparent',
+        display_name="Prisoner's Dilemma (Transparent)",
+        num_demo_participants=2,
+        app_sequence=['transparent', 'question'],
+    ),
     # dict(
     #     name='question',
     #     display_name="Questionnaire",

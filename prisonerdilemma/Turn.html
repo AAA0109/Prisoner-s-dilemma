@@ -32,8 +32,7 @@
     let choiceDiv = document.getElementById('choice-instruction');
     let waitInstDiv = document.getElementById('wait-instruction');
 
-    if (js_vars.my_id == 1) show(decideDiv);
-    else show(waitDiv)
+    show(waitDiv)
 
     function choose(turn) {
         liveSend({ type: 'turn', turn });
@@ -46,6 +45,7 @@
     }
 
     function init(mode) {
+        if (js_vars.my_id == 1) show(decideDiv);
         if (mode == 0) {
             document.getElementById('form').submit();
             return;
