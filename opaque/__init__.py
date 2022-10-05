@@ -127,7 +127,7 @@ class Play(Page):
     def js_vars(player: Player):
         return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.group.mode)
 
-class Guide(Page):
+class Instruct(Page):
     pass
 
 class Turn(Page):
@@ -138,4 +138,4 @@ class Turn(Page):
 class Results(Page):
     pass
 
-page_sequence = [WaitToStart, Guide, Turn, Play, Results]
+page_sequence = [WaitToStart, Instruct, Turn, Play, Results]
