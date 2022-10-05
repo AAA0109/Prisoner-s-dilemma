@@ -70,52 +70,6 @@ class Player(BasePlayer):
 
     age = models.IntegerField(label="Please enter your age.", min=14, max=125, blank=True)
 
-    studies = models.IntegerField(
-        label="Please estimate how many studies you have participated in (excluding this study)",
-        choices=[
-            [1, 'Less than 5 studies'],
-            [2, 'Between 5 and less than 10 studies.'],
-            [3, 'between 10 and less than 15 studies.'],
-            [4, '15 or more studies.'],
-            [5, 'I prefer not to say.']
-        ]
-    )
-
-    workexperience = models.IntegerField(
-        label="Please indicate your work experience. All jobs count, including part-time and volunteer work.",
-        choices=[
-            [1, 'I do not have work experience.'],
-            [2, 'Less than 1 year work experience.'],
-            [3, 'Between 1 and less than 2 years of work experience'],
-            [4, 'Between 2 and less than 3 years work experience.'],
-            [5, 'Between 3 and less than 4 years work experience.'],
-            [6, 'Between 4 and less than 5 years work experience.'],
-            [7, '5 years or more work experience.'],
-            [8, 'I prefer not to say.'],
-        ]
-    )
-
-    degree = models.IntegerField(
-        label="Please indicate the highest academic degree you have completed. If you are currently actively pursuing one, please select that academic degree.",
-        choices=[
-            [1, 'High school or lower'],
-            [2, 'Bachelor degree'],
-            [3, 'Master degree'],
-            [4, 'PhD degree'],
-            [5, 'MBA degree'],
-            [6, 'Other'],
-            [7, 'I prefer not to say.']
-        ]
-    )
-
-    english = models.IntegerField(
-        label="Please rate your English on a percentage scale between 0 and 100.",
-        min=0,
-        max=100,
-        blank=True,
-        initial=None
-    )
-
     risk_attitude = models.IntegerField(
         label="How willing are you in general to take risks on a scale from 0 (not willing to take risks at all) to 10 "
               "(highly willing to take risks)?",
@@ -186,7 +140,7 @@ class Player(BasePlayer):
         choices=Constants.Choices,
     )
     narc_2 = models.IntegerField(
-        label="I hate being the center of attention",
+        label="I hate being the center of attention.",
         choices=Constants.Choices,
     )
     narc_3 = models.IntegerField(
@@ -226,7 +180,7 @@ class Player(BasePlayer):
         choices=Constants.Choices,
     )
     psych_3 = models.IntegerField(
-        label="Payback needs to be quick and nasty",
+        label="Payback needs to be quick and nasty.",
         choices=Constants.Choices,
     )
     psych_4 = models.IntegerField(
@@ -234,11 +188,11 @@ class Player(BasePlayer):
         choices=Constants.Choices,
     )
     psych_5 = models.IntegerField(
-        label="It’s true that I can be mean to others",
+        label="It’s true that I can be mean to others.",
         choices=Constants.Choices,
     )
     psych_6 = models.IntegerField(
-        label="People who mess with me always regret it",
+        label="People who mess with me always regret it.",
         choices=Constants.Choices,
     )
     psych_7 = models.IntegerField(
@@ -246,10 +200,10 @@ class Player(BasePlayer):
         choices=Constants.Choices,
     )
     psych_8 = models.IntegerField(
-        label="I enjoy having sex with people I hardly know",
+        label="I enjoy having sex with people I hardly know.",
         choices=Constants.Choices,
     )
     psych_9 = models.IntegerField(
-        label="I’ll say anything to get what I want",
+        label="I’ll say anything to get what I want.",
         choices=Constants.Choices,
     )

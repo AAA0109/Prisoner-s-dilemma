@@ -6,7 +6,7 @@
 
 <div id="wait" style="display: none" class="mb-5">
     <p class="text-center">
-        Waiting for the other player to decide...
+        Waiting for the other participant to decide...
     </p>
     <progress style="width: 100%"></progress>
 </div>
@@ -28,7 +28,7 @@
     <table class="table">    
         <tbody><tr>
             <td>
-                <label for="id_answer">What is the probability you think that player 2 will cooperate?</label>
+                <label for="id_answer">What is the probability you think that the other participant will cooperate?</label>
             </td>
             <td>
                 <input type="number" class="form-control" id="id_answer" max="100" min="0" name="answer" value="">
@@ -58,7 +58,7 @@
     if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = 'You are first chooser.';
     else turnDiv.innerHTML = 'You are second chooser.';
     if (js_vars.my_id == 1 && js_vars.mode) turnDiv.innerHTML += ' (You decided this.)';
-    if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML += ' (Other player decided this.)';
+    if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML += ' (The other participant decided this.)';
 
     console.log(js_vars.my_id, js_vars)
 
@@ -102,7 +102,7 @@
                 show(decideDiv)
             }
             if (data.other_result !== null) {
-                resultDiv.innerHTML = `(Other player chose <b>${data.other_result ? 'A' : 'B'})</b>`;
+                resultDiv.innerHTML = `(The other participant chose <b>${data.other_result ? 'A' : 'B'})</b>`;
             }
             break;
         }

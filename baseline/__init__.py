@@ -101,6 +101,8 @@ def live_turn_method(player, data):
     group = player.group
     my_id = player.id_in_group
 
+    if group.first_player > 0:
+        return { 0: dict( type = 'finished' ) }
     if data['type'] == 'init':
         if group.mode == -1:
             group.mode = random.choice([0, 1, 2])
@@ -125,6 +127,9 @@ class Play(Page):
     def js_vars(player: Player):
         return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.group.mode)
 
+class Guide(Page):
+    pass
+
 class Turn(Page):
     live_method = live_turn_method
     def js_vars(player: Player):
@@ -133,4 +138,4 @@ class Turn(Page):
 class Results(Page):
     pass
 
-page_sequence = [WaitToStart, Turn, Play, Results]
+page_sequence = [WaitToStart, Guide, Turn, Play, Results]

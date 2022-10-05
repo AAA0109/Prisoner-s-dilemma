@@ -14,6 +14,15 @@
     </div>
      <table class="table">
     {% for field in form %}
+        {% if field.type == 'RadioFieldHorizontal' %}
+        <tr>
+            <td>
+                {{ field.label }}
+                {{ field }}
+            </td>
+            <td></td>
+        </tr>
+        {% else %}
         <tr>
             <td>
                 {{ field.label }}
@@ -22,6 +31,7 @@
                 {{ field }}
             </td>
         </tr>
+        {% endif %}
     {% endfor %}
     </table>
     <hr>
