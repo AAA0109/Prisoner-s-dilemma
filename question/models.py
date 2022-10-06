@@ -82,7 +82,7 @@ class Player(BasePlayer):
         choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         widget=widgets.RadioSelectHorizontal
     )
-    bat_ball = models.IntegerField(
+    bat_ball = models.FloatField(
         label="A bat and a ball cost 1.10 dollars in total. The bat costs 1.00 dollar more than the ball. How much "
               "does the ball cost? Your answer (in cents) e.g. $100 = 10000 cents:",
         min=0
