@@ -6,7 +6,7 @@
 </div>
 
 <div id="decide" style="display: none">
-    <h3 class="text-center">Please decide: <span class="ml-5" id="other-result"></span></h3>
+    <h3 class="text-center">Would you like to choose first or second? <span class="ml-5" id="other-result"></span></h3>
     <p id="choice-instruction"></p>
     <div class="d-flex justify-content-center">
         <button style="width: 100px;" class="btn btn-primary mx-3" type="button" onclick="choose(1)">
@@ -52,12 +52,12 @@
         if (js_vars.my_id == 1) show(decideDiv);
         if (mode == 1) {
             choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
-                Once you have made your decision, the other participant will be informed whether they are choosing first or second and will never learn that it was you who decided this.`;
+                Once you have made your decision, the other participant will be informed whether they are choosing first or second and <b>will never learn that it was you who decided this</b>.`;
             waitInstDiv.innerHTML = `<h4>Please wait</h4>`;
         }
         if (mode == 2) {
             choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
-                Once you have made your decision, the other participant will be informed whether they are choosing first or second and will also be informed that it was you who decided this.`
+                Once you have made your decision, the other participant will be informed whether they are choosing first or second and <b>will also be informed that it was you who decided this<b/>.`
             waitInstDiv.innerHTML = `Waiting for the other participant to decide...<br>
                 The other participant is deciding first or second.`;
         }

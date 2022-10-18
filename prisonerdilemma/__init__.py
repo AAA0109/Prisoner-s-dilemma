@@ -2,12 +2,8 @@ from mimetypes import init
 from otree.api import *
 import random
 
-doc = """
-Prisoner's dilemma
-"""
-
 class C(BaseConstants):
-    NAME_IN_URL = 'prisonerdilemma'
+    NAME_IN_URL='prisoner'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
 
@@ -24,20 +20,27 @@ class C(BaseConstants):
     }
 
     INSTRUCTIONS_TEMPLATE = __name__ + '/instructions.html'
+    INSTRUCTIONS_FIRST_TEMPLATE = __name__ + '/instructions_first.html'
+    INSTRUCTIONS_SECOND_TEMPLATE = __name__ + '/instructions_second.html'
 
 class Subsession(BaseSubsession):
     pass
 
 class Group(BaseGroup):
-    first_player = models.IntegerField(initial=1)
+    first_player = models.IntegerField(initial=0)
     player_turn = models.IntegerField(initial=1)
-    mode = models.IntegerField(initial=-1)  # 0: baseline, 1: opaque, 2: transparent
+    mode = models.IntegerField(initial=0)  # 0: baseline, 1: opaque, 2: transparent
 
 
 class Player(BasePlayer):
     choice = models.LongStringField(initial='')
     other_choice = models.LongStringField(initial='')
-    question_for_first = models.IntegerField(initial=-1)
+    question_for_first = models.StringField(
+        blank=True,
+        label="Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?",
+        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10'],
+        widget=widgets.RadioSelectHorizontal
+    )
     pass
 
 class Game(ExtraModel):
@@ -60,8 +63,6 @@ def live_method(player, data):
 
     if data['type'] == 'choice':
         choice_field = 'choice{}'.format(my_id)
-        if 'answer' in data:
-            player.question_for_first = data['answer']
 
         if my_id != group.player_turn:
             return
@@ -98,13 +99,18 @@ def live_method(player, data):
     }
 
 def live_turn_method(player, data):
+    session = player.session
     group = player.group
     my_id = player.id_in_group
 
+    if session.config['mode'] == 0:
+        group.first_player = 1
+    if group.first_player > 0:
+        return { 0: dict( type = 'finished' ) }
     if data['type'] == 'init':
-        if group.mode == -1:
-            group.mode = random.choice([0, 1, 2])
-        return { 0: dict( type='init', mode=group.mode ) }
+        # if group.mode == -1:
+        #     group.mode = random.choice([0, 1, 2])
+        return { 0: dict( type='init', mode=session.config['mode'] ) }
     if data['type'] == 'turn':
         if (my_id != 1):
             return
@@ -119,11 +125,15 @@ class WaitToStart(WaitPage):
 
 class Play(Page):
     form_model = 'player'
+    form_fields = ['question_for_first']
     live_method = live_method
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.group.mode)
+        return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.session.config['mode'], fields=['question_for_first'])
+
+class Instruct(Page):
+    pass
 
 class Turn(Page):
     live_method = live_turn_method
@@ -133,4 +143,4 @@ class Turn(Page):
 class Results(Page):
     pass
 
-page_sequence = [WaitToStart, Turn, Play, Results]
+page_sequence = [WaitToStart, Instruct, Turn, Play, Results]

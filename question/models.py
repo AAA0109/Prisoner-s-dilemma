@@ -98,6 +98,32 @@ class Player(BasePlayer):
               "Your answer (in number of days):",
         min=0
     )
+    give_up = models.IntegerField(
+        label="In comparison to others, are you a person who is generally willing to give up something today to "
+              "benefit from that in the future or are you not willing to do so?",
+        choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+    )
+    share_others = models.IntegerField(
+        label="How do you assess your willingness to share with others without expecting anything in return "
+              "when it comes to charity?",
+        choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+    )
+    lost_way = models.StringField(
+        label="Imagine the following situation: you are shopping in an unfamiliar city and realize you lost your way. "
+              "You ask a stranger for directions. The stranger offers to take you with their car to your destination. "
+              "The ride takes about 20 minutes and costs the stranger about 20 Euro in total. The stranger does not want money for it. "
+              "You carry six bottles of wine with you. The cheapest bottle costs 5 Euro, the most expensive one 30 Euro. "
+              "You decide to give one of the bottles to the stranger as a thank-you gift. Which bottle do you give?",
+        choices=['5 Euro', '10 Euro', '15 Euro', '20 Euro', '25 Euro', '30 Euro'],
+        widget=widgets.RadioSelectHorizontal
+    )
+    punish_unfair = models.IntegerField(
+        label="4.	How do you see yourself: Are you a person who is generally willing to punish unfair behaviour even if this is costly?",
+        choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+    )
 
     mach_1 = models.IntegerField(
         label = "It’s not wise to tell your secrets.",

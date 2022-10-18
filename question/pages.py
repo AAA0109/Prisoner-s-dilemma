@@ -22,6 +22,10 @@ class Survey1(Page):
         'bat_ball',
         'machine_widget',
         'lake_lily_pad',
+        'give_up',
+        'share_others',
+        'lost_way',
+        'punish_unfair'
     ]
 
     # def is_displayed(self):

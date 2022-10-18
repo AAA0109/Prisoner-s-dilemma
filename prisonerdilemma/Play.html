@@ -1,7 +1,21 @@
 {{ block content }}
 
+<style>
+    .form-check-inline {
+        display: inline-flex;
+        margin-right: 1rem;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-left: 0;
+    }
+    .form-check-inline input {
+        margin-left: 0 !important;
+    }
+</style>
+
 <div class="text-center">
-    <h3 id="turn">You are first chooser.</h3>
+    <h3><span id="turn"></span> <span id="other-result"></span></h3>
 </div>
 
 <div id="wait" style="display: none" class="mb-5">
@@ -12,7 +26,7 @@
 </div>
 
 <div id="decide" style="display: none">
-    <h3 class="text-center">Please decide: <span class="ml-5" id="other-result"></span></h3>
+    <h3 class="text-center">Please choose:</h3>
     <div class="d-flex justify-content-center">
         <button class="btn btn-primary mx-3" type="button" onclick="choose(true)">
             A
@@ -24,17 +38,32 @@
 </div>
 
 <div id="question" style="display: none">
-    <h3 class="text-center">Please answer: </h3>
-    <table class="table">    
-        <tbody><tr>
-            <td>
-                <label for="id_answer">What is the probability you think that the other participant will cooperate?</label>
-            </td>
-            <td>
-                <input type="number" class="form-control" id="id_answer" max="100" min="0" name="answer" value="">
+    <h3 class="text-center">Please choose: </h3>
+    <div>
+        We would now like to ask you about how you think participants who choose second are likely to make their choice.<br>
+        We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose A.<br>
+        You will guess how many of the second participants chose A.<br>
+        If you are correct, you will earn a bonus payment of X.<br>
+    </div>
+    <table class="table">
+        {% for field in form %}
+        {% if field.type == 'RadioFieldHorizontal' %}
+        <tr>
+            <td colspan="2">
+                {{ field.label }}<br>
+                <b style="margin-right: 1rem;"></b>
+                {{ field }}
+                <b>chose A</b>
             </td>
         </tr>
-    </tbody></table>
+        {% else %}
+        <tr>
+            <td>{{ field.label }}</td>
+            <td align="right">{{ field }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </table>
     <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-primary mt-3" onclick="answer_first()">Next</button>
     </div>
@@ -44,7 +73,15 @@
      <!-- chat  -->
 </div>
 
-{{ include C.INSTRUCTIONS_TEMPLATE }}
+<div id="instruction_common" style="display: none;">
+    {{ include C.INSTRUCTIONS_TEMPLATE }}
+</div>
+<div id="instruction_first" style="display: none;">
+    {{ include C.INSTRUCTIONS_FIRST_TEMPLATE }}
+</div>
+<div id="instruction_second" style="display: none;">
+    {{ include C.INSTRUCTIONS_SECOND_TEMPLATE }}
+</div>
 
 <script>
     let waitDiv = document.getElementById('wait');
@@ -52,15 +89,16 @@
     let resultDiv = document.getElementById('other-result');
     let turnDiv = document.getElementById('turn');
     let questionDiv = document.getElementById('question');
+    let instDiv = document.getElementById('instruction_common');
+    let instFirstDiv = document.getElementById('instruction_first');
+    let instSecondDiv = document.getElementById('instruction_second');
 
     let my_choice;
 
-    if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = 'You are first chooser.';
-    else turnDiv.innerHTML = 'You are second chooser.';
-    if (js_vars.my_id == 1 && js_vars.mode) turnDiv.innerHTML += ' (You decided this.)';
-    if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML += ' (The other participant decided this.)';
-
-    console.log(js_vars.my_id, js_vars)
+    const firstOrsecond = (js_vars.my_id == js_vars.first_player) ? 'first' : 'second';
+    if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = `You will make the ${firstOrsecond} choice.`;
+    if (js_vars.my_id == 1 && js_vars.mode) turnDiv.innerHTML = `You decided to choose ${firstOrsecond}.`;
+    if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML = `The other participant decided that you choose ${firstOrsecond}.`;
 
     function choose(choice) {
         my_choice = choice;
@@ -71,13 +109,20 @@
         liveSend({ type: 'choice', choice });
     }
 
-    function answer_first() {
-        const answer = parseInt(document.getElementById('id_answer').value)
-        if (!answer || isNaN(answer) || answer < 0 || answer > 100) {
-            document.getElementById('id_answer').focus();
-            return;
+    function checkRadioValue(name) {
+        var ele = document.getElementsByName(name);
+            
+        for(i = 0; i < ele.length; i++) {
+            if(ele[i].checked)
+                return true;
         }
-        liveSend({ type: 'choice', choice: my_choice, answer });
+        return false;
+    }
+    function answer_first() {
+        for (let i = 0; i < js_vars.fields.length; i ++)
+            if (!checkRadioValue(js_vars.fields[i]))
+                return;
+        liveSend({ type: 'choice', choice: my_choice });
     }
 
     function show(ele) {
@@ -85,6 +130,14 @@
             div.style.display = (div === ele) ? 'block' : 'none';
         }
     }
+
+    function showInstruction(ele) {
+        for (let div of [instDiv, instFirstDiv, instSecondDiv]) {
+            div.style.display = (div === ele) ? 'block' : 'none';
+        }
+    }
+    if(firstOrsecond === 'first') showInstruction(instFirstDiv);
+    else showInstruction(instSecondDiv);
 
     function liveRecv(data) {
         console.log('liveRecv', JSON.stringify(data));
@@ -102,7 +155,7 @@
                 show(decideDiv)
             }
             if (data.other_result !== null) {
-                resultDiv.innerHTML = `(The other participant chose <b>${data.other_result ? 'A' : 'B'})</b>`;
+                resultDiv.innerHTML = `The other participant chose <b>${data.other_result ? 'A' : 'B'}</b>`;
             }
             break;
         }

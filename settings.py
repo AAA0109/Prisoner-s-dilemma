@@ -11,19 +11,31 @@ SESSION_CONFIGS = [
         name='baseline',
         display_name="Prisoner's Dilemma (Baseline)",
         num_demo_participants=2,
-        app_sequence=['baseline', 'question'],
+        app_sequence=['prisonerdilemma', 'question'],
+        mode=0,
+        doc = """
+        Prisoner's Dilemma (Baseline)
+        """
     ),
     dict(
         name='opaque',
         display_name="Prisoner's Dilemma (Opaque)",
         num_demo_participants=2,
-        app_sequence=['opaque', 'question'],
+        app_sequence=['prisonerdilemma', 'question'],
+        mode=1,
+        doc = """
+        Prisoner's Dilemma (Opaque)
+        """
     ),
     dict(
         name='transparent',
         display_name="Prisoner's Dilemma (Transparent)",
         num_demo_participants=2,
-        app_sequence=['transparent', 'question'],
+        app_sequence=['prisonerdilemma', 'question'],
+        mode=2,
+        doc = """
+        Prisoner's Dilemma (Transparent)
+        """
     ),
     # dict(
     #     name='question',
