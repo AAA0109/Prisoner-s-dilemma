@@ -128,108 +128,135 @@ class Player(BasePlayer):
     mach_1 = models.IntegerField(
         label = "It’s not wise to tell your secrets.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_2 = models.IntegerField(
         label="I like to use clever manipulation to get my way.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_3 = models.IntegerField(
         label="Whatever it takes, you must get the important people on your side.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_4 = models.IntegerField(
         label="Avoid direct conflict with others because they maybe useful in the future.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_5 = models.IntegerField(
         label="It’s wise to keep track of information that you can use against people later.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_6 = models.IntegerField(
         label="You should wait for the right time to get back at people.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_7 = models.IntegerField(
         label="there are things you should hide from other people to preserve your reputation.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_8 = models.IntegerField(
         label="Make sure your plans benefit yourself, not others.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     mach_9 = models.IntegerField(
         label="Most people can be manipulated.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_1 = models.IntegerField(
         label="People see me as a natural leader.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_2 = models.IntegerField(
         label="I hate being the center of attention.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_3 = models.IntegerField(
         label="Many group activities tend to be dull without me.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_4 = models.IntegerField(
         label="I know that I am special because everyone keeps telling me so.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_5 = models.IntegerField(
         label="I like to get acquainted with important people.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_6 = models.IntegerField(
         label="I feel embarrassed if someone compliments me.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_7 = models.IntegerField(
         label="I have been compared to famous people.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_8 = models.IntegerField(
         label="I am an average person.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     narc_9 = models.IntegerField(
         label="I insist on getting the respect I deserve.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_1 = models.IntegerField(
         label="I like to get revenge on authorities.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_2 = models.IntegerField(
         label="I avoid dangerous situations.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_3 = models.IntegerField(
         label="Payback needs to be quick and nasty.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_4 = models.IntegerField(
         label="People often say I’m out of control.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_5 = models.IntegerField(
         label="It’s true that I can be mean to others.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_6 = models.IntegerField(
         label="People who mess with me always regret it.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_7 = models.IntegerField(
         label="I have never gotten into trouble with the law.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_8 = models.IntegerField(
         label="I enjoy having sex with people I hardly know.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )
     psych_9 = models.IntegerField(
         label="I’ll say anything to get what I want.",
         choices=Constants.Choices,
+        widget=widgets.RadioSelectHorizontal
     )

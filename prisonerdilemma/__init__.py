@@ -34,7 +34,6 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     choice = models.LongStringField(initial='')
-    other_choice = models.LongStringField(initial='')
     question_for_first = models.StringField(
         blank=True,
         label="Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?",
@@ -72,7 +71,7 @@ def live_method(player, data):
         if getattr(game, choice_field) is not None:
             return
         setattr(game, choice_field, choice)
-        player.participant.choice = getChoiceFromBool(choice)
+        player.choice = player.participant.choice = getChoiceFromBool(choice)
         player.get_others_in_group()[0].participant.other_choice = getChoiceFromBool(choice)
 
         choices = (game.choice1, game.choice2)

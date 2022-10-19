@@ -7,14 +7,38 @@
 
 {% block content %}
 
+    <style>
+        .form-check-inline {
+            display: inline-flex;
+            margin-right: 1rem;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-left: 0;
+        }
+        .form-check-inline input {
+            margin-left: 0 !important;
+        }
+    </style>
+
     <div class="instructions" style="text-align:center">
     <b>
         Please rate several statements reflecting general feelings and experiences that may or may not apply to you.<br>
         Note that 1 is strongly disagree, 5 is strongly agree.
     </b>
     </div>
-     <table class="table mt-2">
-    {% for field in form %}
+    <table class="table mt-2">
+        {% for field in form %}
+        {% if field.type == 'RadioFieldHorizontal' %}
+        <tr>
+            <td colspan="2">
+                {{ field.label }}<br>
+                <b style="margin-right: 1rem;">strongly agree</b>
+                {{ field }}
+                <b>strongly agree</b>
+            </td>
+        </tr>
+        {% else %}
         <tr>
             <td>
                 {{ field.label }}
@@ -23,6 +47,7 @@
                 {{ field }}
             </td>
         </tr>
+        {% endif %}
     {% endfor %}
     </table>
     <hr>
