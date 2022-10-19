@@ -1,6 +1,6 @@
 from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
-from .models import Constants
+from .models import Constants, Player
 import random
 import json
 
@@ -141,7 +141,14 @@ class Demographics(Page):
 class Final(Page):
     # def is_displayed(self):
     #     return self.round_number == self.participant.vars['final']
-    pass
+    def vars_for_template(player):
+        participant = player.participant
+        print(participant)
+        
+        return dict(
+            choice = participant.choice,
+            other_choice = participant.other_choice,
+        )
 
 
 page_sequence = [

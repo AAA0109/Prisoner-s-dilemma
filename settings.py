@@ -73,15 +73,8 @@ SECRET_KEY = '4387860144726'
 INSTALLED_APPS = ['otree']
 
 PARTICIPANT_FIELDS = [
-    'booking_time',
-    'cards',
-    'order',
-    'reaction_times',
-    'read_mind_in_eyes_score',
-    'responses',
-    'stimuli',
-    'svo_angle',
-    'svo_category',
+    'choice',
+    'other_choice'
 ]
 
 SESSION_FIELDS = ['finished_p1_list', 'iowa_costs', 'wisconsin', 'intergenerational_history']

@@ -72,8 +72,8 @@ def live_method(player, data):
         if getattr(game, choice_field) is not None:
             return
         setattr(game, choice_field, choice)
-        player.choice = getChoiceFromBool(choice)
-        player.get_others_in_group()[0].other_choice = getChoiceFromBool(choice)
+        player.participant.choice = getChoiceFromBool(choice)
+        player.get_others_in_group()[0].participant.other_choice = getChoiceFromBool(choice)
 
         choices = (game.choice1, game.choice2)
         is_ready = None not in choices
@@ -143,4 +143,4 @@ class Turn(Page):
 class Results(Page):
     pass
 
-page_sequence = [WaitToStart, Instruct, Turn, Play, Results]
+page_sequence = [WaitToStart, Instruct, Turn, Play]
