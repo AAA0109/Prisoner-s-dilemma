@@ -1,16 +1,20 @@
 from mimetypes import init
+from pickle import TRUE
 from otree.api import *
 import random
+
+from sqlalchemy import false
 
 class C(BaseConstants):
     NAME_IN_URL='prisoner'
     PLAYERS_PER_GROUP = 2
     NUM_ROUNDS = 1
 
-    PAYOFFA = cu(2)
-    PAYOFFB = cu(4)
-    PAYOFFC = cu(6)
-    PAYOFFD = cu(9)
+    PAYOFFA = cu(1.2)
+    PAYOFFB = cu(2.4)
+    PAYOFFC = cu(3.6)
+    PAYOFFD = cu(5.4)
+    PAYOFFX = cu(0.15)
 
     PAYOFF_MATRIX = {
         (True, True): (PAYOFFC, PAYOFFC),
@@ -30,13 +34,28 @@ class Group(BaseGroup):
     first_player = models.IntegerField(initial=0)
     player_turn = models.IntegerField(initial=1)
     mode = models.IntegerField(initial=0)  # 0: baseline, 1: opaque, 2: transparent
+    answer_state = models.BooleanField(initial=False)
 
 
 class Player(BasePlayer):
     choice = models.LongStringField(initial='')
-    question_for_first = models.StringField(
+    elicit1 = models.StringField(
         blank=True,
-        label="Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?",
+        label="We would now like to ask you about how you think participants who choose second are likely to make their choice."
+            "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose A."
+            "You will guess how many of the second participants chose A."
+            "If you are correct, you will earn a bonus payment of X."
+            "Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?",
+        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10'],
+        widget=widgets.RadioSelectHorizontal
+    )
+    elicit2 = models.StringField(
+        blank=True,
+        label="We would now like to ask you about how you think participants who choose second are likely to make their choice."
+            "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose B."
+            "You will guess how many of the second participants chose A."
+            "If you are correct, you will earn a bonus payment of X."
+            "Given that the first choice was B, how many of the 10 participants who chose second do you think chose A?",
         choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10'],
         widget=widgets.RadioSelectHorizontal
     )
@@ -81,19 +100,24 @@ def live_method(player, data):
             [game.payoff1, game.payoff2] = C.PAYOFF_MATRIX[choices]
             p1.payoff += game.payoff1
             p2.payoff += game.payoff2
-
+    if data['type'] == 'answer':
+        group.answer_state = True
     return {
         1: dict(
             type = 'status',
-            should_wait = group.player_turn != 1,
+            should_wait = not ((group.player_turn == 1) or ((group.first_player == 1) and (group.answer_state == False))),
+            answer_state = group.answer_state,
+            result = game.choice1,
             other_result = game.choice2,
-            finished = game.choice1 is not None and game.choice2 is not None
+            finished = game.choice1 is not None and game.choice2 is not None and group.answer_state
         ),
         2: dict(
             type = 'status',
-            should_wait = group.player_turn != 2,
+            should_wait = not ((group.player_turn == 2) or ((group.first_player == 2) and (group.answer_state == False))),
+            answer_state = group.answer_state,
+            result = game.choice2,
             other_result = game.choice1,
-            finished = game.choice1 is not None and game.choice2 is not None
+            finished = game.choice1 is not None and game.choice2 is not None and group.answer_state
         )
     }
 
@@ -124,12 +148,12 @@ class WaitToStart(WaitPage):
 
 class Play(Page):
     form_model = 'player'
-    form_fields = ['question_for_first']
+    form_fields = ['elicit1', 'elicit2']
     live_method = live_method
 
     @staticmethod
     def js_vars(player: Player):
-        return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.session.config['mode'], fields=['question_for_first'])
+        return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.session.config['mode'], fields=['elicit1', 'elicit2'])
 
 class Instruct(Page):
     pass

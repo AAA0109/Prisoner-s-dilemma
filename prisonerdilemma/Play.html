@@ -39,12 +39,6 @@
 
 <div id="question" style="display: none">
     <h3 class="text-center">Please choose: </h3>
-    <div>
-        We would now like to ask you about how you think participants who choose second are likely to make their choice.<br>
-        We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose <span class="AB-choice">A</span>.<br>
-        You will guess how many of the second participants chose <span class="AB-choice">A</span>.<br>
-        If you are correct, you will earn a bonus payment of X.<br>
-    </div>
     <table class="table">
         {% for field in form %}
         {% if field.type == 'RadioFieldHorizontal' %}
@@ -100,19 +94,10 @@
     if (js_vars.my_id == 1 && js_vars.mode) turnDiv.innerHTML = `You decided to choose ${firstOrsecond}.`;
     if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML = `The other participant decided that you choose ${firstOrsecond}.`;
 
-    function updateChoiceLable() {
-        var ele = document.getElementsByClassName('AB-choice');
-        var choice = my_choice ? 'A' : 'B';
-        for (let i = 0; i < ele.length; i ++)
-            ele[i].innerHTML = choice;
-    }
-
     function choose(choice) {
         my_choice = choice;
         if (js_vars.my_id == js_vars.first_player) {
             show(questionDiv);
-            updateChoiceLable();
-            return;
         }
         liveSend({ type: 'choice', choice });
     }
@@ -130,13 +115,15 @@
         for (let i = 0; i < js_vars.fields.length; i ++)
             if (!checkRadioValue(js_vars.fields[i]))
                 return;
-        liveSend({ type: 'choice', choice: my_choice });
+        liveSend({ type: 'answer' });
     }
 
     function show(ele) {
         for (let div of [waitDiv, decideDiv, questionDiv]) {
             div.style.display = (div === ele) ? 'block' : 'none';
         }
+        turnDiv.style.display = (decideDiv === ele) ? 'block' : 'none';
+        resultDiv.style.display = (decideDiv === ele) ? 'block' : 'none';
     }
 
     function showInstruction(ele) {
@@ -160,8 +147,8 @@
             if (is_waiting) {
                 show(waitDiv)
             } else {
-                if (!my_choice)
-                    show(decideDiv)
+                if (data.result === null) show(decideDiv)
+                else show(questionDiv)
             }
             if (data.other_result !== null) {
                 resultDiv.innerHTML = `The other participant chose <b>${data.other_result ? 'A' : 'B'}</b>`;
