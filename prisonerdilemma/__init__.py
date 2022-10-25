@@ -14,7 +14,7 @@ class C(BaseConstants):
     PAYOFFB = cu(2.4)
     PAYOFFC = cu(3.6)
     PAYOFFD = cu(5.4)
-    PAYOFFX = cu(0.15)
+    PAYOFFX = cu(0.25)
 
     PAYOFF_MATRIX = {
         (True, True): (PAYOFFC, PAYOFFC),
@@ -41,22 +41,22 @@ class Player(BasePlayer):
     choice = models.LongStringField(initial='')
     elicit1 = models.StringField(
         blank=True,
-        label="We would now like to ask you about how you think participants who choose second are likely to make their choice."
-            "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose A."
-            "You will guess how many of the second participants chose A."
-            "If you are correct, you will earn a bonus payment of X."
-            "Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?",
-        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10'],
+        label="We would now like to ask you about how you think participants who choose second are likely to make their choice.\n"
+            "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose A.\n"
+            "You will guess how many of the second participants chose A.\n"
+            "If you are correct, you will earn a bonus payment of £0.25.\n"
+            "Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?\n",
+        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10'],
         widget=widgets.RadioSelectHorizontal
     )
     elicit2 = models.StringField(
         blank=True,
-        label="We would now like to ask you about how you think participants who choose second are likely to make their choice."
-            "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose B."
-            "You will guess how many of the second participants chose A."
-            "If you are correct, you will earn a bonus payment of X."
-            "Given that the first choice was B, how many of the 10 participants who chose second do you think chose A?",
-        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10'],
+        label="We would now like to ask you about how you think participants who choose second are likely to make their choice.\n"
+            "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose B.\n"
+            "You will guess how many of the second participants chose A.\n"
+            "If you are correct, you will earn a bonus payment of £0.25.\n"
+            "Given that the first choice was B, how many of the 10 participants who chose second do you think chose A?\n",
+        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10'],
         widget=widgets.RadioSelectHorizontal
     )
     pass

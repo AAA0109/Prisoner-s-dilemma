@@ -32,9 +32,15 @@
         <tr>
             <td colspan="2">
                 {{ field.label }}<br>
+                {% if "six bottles" not in field.label.text %}
                 <b style="margin-right: 1rem;">completely unwilling</b>
+                {% else %}
+                <b style="margin-right: 1rem;">You give</b>
+                {% endif %}
                 {{ field }}
+                {% if "six bottles" not in field.label.text %}
                 <b>very willing</b>
+                {% endif %}
             </td>
         </tr>
         {% else %}
