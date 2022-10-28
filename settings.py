@@ -7,37 +7,40 @@ SESSION_CONFIGS = [
     #     num_demo_participants=4,
     #     app_sequence=['prisonerdilemma', 'question'],
     # ),
-    dict(
-        name='baseline',
-        display_name="Prisoner's Dilemma (Baseline)",
-        num_demo_participants=2,
-        app_sequence=['prisonerdilemma', 'question'],
-        mode=0,
-        doc = """
-        Prisoner's Dilemma (Baseline)
-        """,
-        completionlink='https://otree-hr.herokuapp.com/redirect_prolific/1236/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}',
-    ),
-    dict(
-        name='opaque',
-        display_name="Prisoner's Dilemma (Opaque)",
-        num_demo_participants=2,
-        app_sequence=['prisonerdilemma', 'question'],
-        mode=1,
-        doc = """
-        Prisoner's Dilemma (Opaque)
-        """
-    ),
-    dict(
-        name='transparent',
-        display_name="Prisoner's Dilemma (Transparent)",
-        num_demo_participants=2,
-        app_sequence=['prisonerdilemma', 'question'],
-        mode=2,
-        doc = """
-        Prisoner's Dilemma (Transparent)
-        """
-    ),
+    ROOMS = [
+        dict(
+            name='baseline',
+            display_name="Prisoner's Dilemma (Baseline)",
+            num_demo_participants=2,
+            app_sequence=['prisonerdilemma', 'question'],
+            mode=0,
+            doc = """
+            Prisoner's Dilemma (Baseline)
+            """,
+            # completionlink='https://otree-hr.herokuapp.com/redirect_prolific/1236/?participant_label={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}',
+            completionlink='https://app.prolific.co/submissions/complete?cc=CVFJ08S4'
+        ),
+        dict(
+            name='opaque',
+            display_name="Prisoner's Dilemma (Opaque)",
+            num_demo_participants=2,
+            app_sequence=['prisonerdilemma', 'question'],
+            mode=1,
+            doc = """
+            Prisoner's Dilemma (Opaque)
+            """
+        ),
+        dict(
+            name='transparent',
+            display_name="Prisoner's Dilemma (Transparent)",
+            num_demo_participants=2,
+            app_sequence=['prisonerdilemma', 'question'],
+            mode=2,
+            doc = """
+            Prisoner's Dilemma (Transparent)
+            """
+        ),
+    ]
     # dict(
     #     name='question',
     #     display_name="Questionnaire",
