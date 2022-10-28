@@ -1,12 +1,6 @@
 from os import environ
 
 SESSION_CONFIGS = [
-    # dict(
-    #     name='prisonerdilemma',
-    #     display_name="Prisoner's Dilemma",
-    #     num_demo_participants=4,
-    #     app_sequence=['prisonerdilemma', 'question'],
-    # ),
     dict(
         name='baseline',
         display_name="Prisoner's Dilemma (Baseline)",
@@ -19,46 +13,35 @@ SESSION_CONFIGS = [
         # completionlink='https://otree-hr.herokuapp.com/redirect_prolific/1236/?participant_label={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}',
         completionlink='https://app.prolific.co/submissions/complete?cc=CVFJ08S4'
     ),
-    ROOMS = [
-        dict(
-            name='baseline',
-            display_name="Prisoner's Dilemma (Baseline)",
-            num_demo_participants=2,
-            app_sequence=['prisonerdilemma', 'question'],
-            mode=0,
-            doc = """
-            Prisoner's Dilemma (Baseline)
-            """,
-            # completionlink='https://otree-hr.herokuapp.com/redirect_prolific/1236/?participant_label={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}',
-            completionlink='https://app.prolific.co/submissions/complete?cc=CVFJ08S4'
-        ),
-        dict(
-            name='opaque',
-            display_name="Prisoner's Dilemma (Opaque)",
-            num_demo_participants=2,
-            app_sequence=['prisonerdilemma', 'question'],
-            mode=1,
-            doc = """
-            Prisoner's Dilemma (Opaque)
-            """
-        ),
-        dict(
-            name='transparent',
-            display_name="Prisoner's Dilemma (Transparent)",
-            num_demo_participants=2,
-            app_sequence=['prisonerdilemma', 'question'],
-            mode=2,
-            doc = """
-            Prisoner's Dilemma (Transparent)
-            """
-        ),
-    ]
+    dict(
+        name='opaque',
+        display_name="Prisoner's Dilemma (Opaque)",
+        num_demo_participants=2,
+        app_sequence=['prisonerdilemma', 'question'],
+        mode=1,
+        doc = """
+        Prisoner's Dilemma (Opaque)
+        """
+    ),
+    dict(
+        name='transparent',
+        display_name="Prisoner's Dilemma (Transparent)",
+        num_demo_participants=2,
+        app_sequence=['prisonerdilemma', 'question'],
+        mode=2,
+        doc = """
+        Prisoner's Dilemma (Transparent)
+        """
+    ),
+]
+
+ROOMS = [
     # dict(
-    #     name='question',
-    #     display_name="Questionnaire",
-    #     num_demo_participants=20,
-    #     app_sequence=['question'],
+    #     name='econ101',
+    #     display_name='Econ 101 class',
+    #     participant_label_file='_rooms/econ101.txt',
     # ),
+    dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
