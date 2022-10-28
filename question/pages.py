@@ -149,16 +149,26 @@ class Final(Page):
             choice = participant.choice,
             other_choice = participant.other_choice,
         )
+class Payment(Page):
+    def before_next_page(self):
+        self.prolific_id = self.participant.label
+        self. participant.finished = True    
+    def js_vars(player):
+        return dict(
+            completionlink=
+              player.subsession.session.config['completionlink']
+        )
 
 
 page_sequence = [
-    Introduction,
-    Demographics,
-    Survey1,
-    Survey2,
-    Survey3,
-    Survey4,
-    Final
+    # Introduction,
+    # Demographics,
+    # Survey1,
+    # Survey2,
+    # Survey3,
+    # Survey4,
+    Final,
+    Payment
 ]
 
 pages_per_round = len(page_sequence)

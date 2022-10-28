@@ -15,7 +15,8 @@ SESSION_CONFIGS = [
         mode=0,
         doc = """
         Prisoner's Dilemma (Baseline)
-        """
+        """,
+        completionlink='https://otree-hr.herokuapp.com/redirect_prolific/1236/?PROLIFIC_PID={{%PROLIFIC_PID%}}&STUDY_ID={{%STUDY_ID%}}&SESSION_ID={{%SESSION_ID%}}',
     ),
     dict(
         name='opaque',
@@ -74,7 +75,8 @@ INSTALLED_APPS = ['otree']
 
 PARTICIPANT_FIELDS = [
     'choice',
-    'other_choice'
+    'other_choice',
+    'finished'
 ]
 
 SESSION_FIELDS = ['finished_p1_list', 'iowa_costs', 'wisconsin', 'intergenerational_history']

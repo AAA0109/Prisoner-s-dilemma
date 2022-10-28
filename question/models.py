@@ -56,7 +56,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-
+    prolific_id = models.StringField(default=str(" "))
     #Demographics
     gender = models.IntegerField(
         label="Please select your gender.",
