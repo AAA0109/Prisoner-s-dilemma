@@ -161,12 +161,12 @@ class Payment(Page):
 
 
 page_sequence = [
-    # Introduction,
-    # Demographics,
-    # Survey1,
-    # Survey2,
-    # Survey3,
-    # Survey4,
+    Introduction,
+    Demographics,
+    Survey1,
+    Survey2,
+    Survey3,
+    Survey4,
     Final,
     Payment
 ]
