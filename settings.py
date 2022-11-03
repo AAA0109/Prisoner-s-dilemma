@@ -43,8 +43,8 @@ ROOMS = [
     #     participant_label_file='_rooms/econ101.txt',
     # ),
     dict(name='experiment1', display_name='Room for Baseline'),
-    dict(name='experiment1', display_name='Room for Opaque'),
-    dict(name='experiment1', display_name='Room for Transparent'),
+    dict(name='experiment2', display_name='Room for Opaque'),
+    dict(name='experiment3', display_name='Room for Transparent'),
 ]
 
 # if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
