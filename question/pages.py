@@ -123,7 +123,7 @@ class Survey4(Page):
 
 class Demographics(Page):
     form_model = 'player'
-    form_fields = ['gender', 'age']
+    form_fields = ['gender', 'age', 'prolific_id']
 
     # def is_displayed(self):
     #     return self.round_number == self.participant.vars['demographics']
@@ -167,8 +167,7 @@ page_sequence = [
     Survey2,
     Survey3,
     Survey4,
-    Final,
-    Payment
+    Final
 ]
 
 pages_per_round = len(page_sequence)

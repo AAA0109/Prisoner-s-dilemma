@@ -70,6 +70,8 @@ class Player(BasePlayer):
 
     age = models.IntegerField(label="Please enter your age.", min=14, max=125, blank=True)
 
+    prolific_id = models.StringField(label="Please enter your ProlificID")
+
     risk_attitude = models.IntegerField(
         label="How willing are you in general to take risks on a scale from 0 (not willing to take risks at all) to 10 "
               "(highly willing to take risks)?",
