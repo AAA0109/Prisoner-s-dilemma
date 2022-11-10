@@ -39,6 +39,7 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     choice = models.LongStringField(initial='')
+    prolificID = models.StringField(initial='')
     elicit1 = models.StringField(
         blank=True,
         label="We would now like to ask you about how you think participants who choose second are likely to make their choice.\n"
@@ -76,6 +77,9 @@ def getChoiceFromBool(choice):
 def live_method(player, data):
     group = player.group
     my_id = player.id_in_group
+
+    if (player.prolificID == '' and player.participant.label is not None):
+        player.prolificID = player.participant.label
 
     [game] = Game.filter(group = group)
 
