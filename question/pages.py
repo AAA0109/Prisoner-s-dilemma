@@ -123,7 +123,7 @@ class Survey4(Page):
 
 class Demographics(Page):
     form_model = 'player'
-    form_fields = ['gender', 'age', 'prolific_id']
+    form_fields = ['gender', 'age']
 
     # def is_displayed(self):
     #     return self.round_number == self.participant.vars['demographics']
