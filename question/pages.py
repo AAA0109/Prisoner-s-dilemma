@@ -167,7 +167,8 @@ page_sequence = [
     Survey2,
     Survey3,
     Survey4,
-    Final
+    Final,
+    Payment
 ]
 
 pages_per_round = len(page_sequence)

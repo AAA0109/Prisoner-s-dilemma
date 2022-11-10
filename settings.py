@@ -10,7 +10,7 @@ SESSION_CONFIGS = [
         doc = """
         Prisoner's Dilemma (Baseline)
         """,
-        completionlink='https://app.prolific.co/submissions/complete?cc=CVFJ08S4'
+        completionlink='https://app.prolific.co/submissions/complete?cc=CKZZ522T'
     ),
     dict(
         name='opaque',
@@ -21,7 +21,7 @@ SESSION_CONFIGS = [
         doc = """
         Prisoner's Dilemma (Opaque)
         """,
-        completionlink='https://app.prolific.co/submissions/complete?cc=CVFJ08S4'
+        completionlink='https://app.prolific.co/submissions/complete?cc=CKZZ522T'
     ),
     dict(
         name='transparent',
@@ -32,7 +32,7 @@ SESSION_CONFIGS = [
         doc = """
         Prisoner's Dilemma (Transparent)
         """,
-        completionlink='https://app.prolific.co/submissions/complete?cc=CVFJ08S4'
+        completionlink='https://app.prolific.co/submissions/complete?cc=CKZZ522T'
     ),
 ]
 
