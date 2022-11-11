@@ -2,6 +2,7 @@ from otree.api import Currency as c, currency_range
 from ._builtin import Page, WaitPage
 from .models import Constants, Player
 import random
+import time
 import json
 
 def progress(p):
@@ -143,7 +144,8 @@ class Final(Page):
     #     return self.round_number == self.participant.vars['final']
     def vars_for_template(player):
         participant = player.participant
-        print(participant)
+        participant.end_time = time.time()
+        participant.total_spent = participant.end_time - participant.start_time
         
         return dict(
             choice = participant.choice,
@@ -152,7 +154,7 @@ class Final(Page):
 class Payment(Page):
     def before_next_page(self):
         self.prolific_id = self.participant.label
-        self. participant.finished = True    
+        self.participant.finished = True    
     def js_vars(player):
         return dict(
             completionlink=

@@ -2,6 +2,7 @@ from mimetypes import init
 from pickle import TRUE
 from otree.api import *
 import random
+import time
 
 from sqlalchemy import false
 
@@ -160,6 +161,10 @@ class Play(Page):
         return dict(my_id = player.id_in_group, first_player = player.group.first_player, mode = player.session.config['mode'], fields=['elicit1', 'elicit2'])
 
 class Instruct(Page):
+    @staticmethod
+    def vars_for_template(player):
+        player.participant.start_time = time.time()
+        return dict()
     pass
 
 class Turn(Page):

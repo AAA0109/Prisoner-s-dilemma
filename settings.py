@@ -77,6 +77,9 @@ INSTALLED_APPS = ['otree']
 PARTICIPANT_FIELDS = [
     'choice',
     'other_choice',
+    'start_time',
+    'end_time',
+    'total_spent',
     'finished'
 ]
 
