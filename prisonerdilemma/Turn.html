@@ -1,7 +1,7 @@
 {{ block content }}
 
 <div id="wait" style="display: none" class="mb-5">
-    <h3 id="wait-instruction" class="text-center"></h3>
+    <p id="wait-instruction" class="text-center"></p>
     <progress style="width: 100%"></progress>
 </div>
 
@@ -53,13 +53,13 @@
         if (mode == 1) {
             choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
                 Once you have made your decision, the other participant will be informed whether they are choosing first or second and <b>will never learn that it was you who decided this</b>.`;
-            waitInstDiv.innerHTML = `<h4>Please wait</h4>`;
+            waitInstDiv.innerHTML = `Please wait`;
         }
         if (mode == 2) {
             choiceDiv.innerHTML = `You have the opportunity to decide if you want to choose first or second.<br>
                 Once you have made your decision, the other participant will be informed whether they are choosing first or second and <b>will also be informed that it was you who decided this<b/>.`
             waitInstDiv.innerHTML = `Waiting for the other participant to decide...<br>
-                The other participant is deciding whether to choose first or second.`;
+                <h3>The other participant is deciding whether they choose first or second.</h3>`;
         }
     }
 
