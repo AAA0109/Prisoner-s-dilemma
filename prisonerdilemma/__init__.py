@@ -147,6 +147,7 @@ def live_turn_method(player, data):
     return { 0: dict( type = 'finished' ) }
 
 class WaitToStart(WaitPage):
+    body_text = "Waiting for other participant. You will be paid for the waiting time."
     @staticmethod
     def after_all_players_arrive(group: Group):
         Game.create(group=group)
