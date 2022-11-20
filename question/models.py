@@ -112,13 +112,20 @@ class Player(BasePlayer):
         choices=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
         widget=widgets.RadioSelectHorizontal
     )
-    lost_way = models.StringField(
+    lost_way = models.IntegerField(
         label="Imagine the following situation: you are shopping in an unfamiliar city and realize you lost your way. "
               "You ask a stranger for directions. The stranger offers to take you with their car to your destination. "
               "The ride takes about 20 minutes and costs the stranger about 20 Euro in total. The stranger does not want money for it. "
               "You carry six bottles of wine with you. The cheapest bottle costs 5 Euro, the most expensive one 30 Euro. "
               "You decide to give one of the bottles to the stranger as a thank-you gift. Which bottle do you give?",
-        choices=['5 Euro', '10 Euro', '15 Euro', '20 Euro', '25 Euro', '30 Euro'],
+        choices=[
+            [5, '5 Euro'],
+            [10, '10 Euro'],
+            [15, '15 Euro'],
+            [20, '20 Euro'],
+            [25, '25 Euro'],
+            [30, '30 Euro']
+        ],
         widget=widgets.RadioSelectHorizontal
     )
     punish_unfair = models.IntegerField(

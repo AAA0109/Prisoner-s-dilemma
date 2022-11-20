@@ -39,26 +39,53 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    order_choice = models.StringField(initial='')
     choice = models.LongStringField(initial='')
     prolificID = models.StringField(initial='')
-    elicit1 = models.StringField(
+    elicit1 = models.IntegerField(
         blank=True,
         label="We would now like to ask you about how you think participants who choose second are likely to make their choice.\n"
             "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose A.\n"
             "You will guess how many of the second participants chose A.\n"
             "If you are correct, you will earn a bonus payment of £0.25.\n"
             "Given that the first choice was A, how many of the 10 participants who chose second do you think chose A?\n",
-        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10'],
+        # choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10'],
+        choices=[
+            [0, '0/10'],
+            [1, '1/10'],
+            [2, '2/10'],
+            [3, '3/10'],
+            [4, '4/10'],
+            [5, '5/10'],
+            [6, '6/10'],
+            [7, '7/10'],
+            [8, '8/10'],
+            [9, '9/10'],
+            [10, '10/10'],
+        ],
         widget=widgets.RadioSelectHorizontal
     )
-    elicit2 = models.StringField(
+    elicit2 = models.IntegerField(
         blank=True,
         label="We would now like to ask you about how you think participants who choose second are likely to make their choice.\n"
             "We will randomly select 10 pairs of participants from today's experiment where the participant who chose first chose B.\n"
             "You will guess how many of the second participants chose A.\n"
             "If you are correct, you will earn a bonus payment of £0.25.\n"
             "Given that the first choice was B, how many of the 10 participants who chose second do you think chose A?\n",
-        choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10'],
+        # choices=['0/10', '1/10', '2/10', '3/10', '4/10', '5/10', '6/10', '7/10', '8/10', '9/10', '10/10'],
+        choices=[
+            [0, '0/10'],
+            [1, '1/10'],
+            [2, '2/10'],
+            [3, '3/10'],
+            [4, '4/10'],
+            [5, '5/10'],
+            [6, '6/10'],
+            [7, '7/10'],
+            [8, '8/10'],
+            [9, '9/10'],
+            [10, '10/10'],
+        ],
         widget=widgets.RadioSelectHorizontal
     )
     pass
@@ -142,6 +169,10 @@ def live_turn_method(player, data):
     if data['type'] == 'turn':
         if (my_id != 1):
             return
+        if data['turn'] == 1:
+            player.order_choice = 'first'
+        else:
+            player.order_choice = 'second'
         group.first_player = data['turn']
         group.player_turn = group.first_player
     return { 0: dict( type = 'finished' ) }
