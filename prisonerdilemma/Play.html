@@ -40,6 +40,39 @@
     </div>
 </div>
 
+<div id="decide_second" style="display: none">
+    <h3 class="text-center">Please choose:</h3>
+    <table class="table">
+        <tr>
+            <td>If the first mover chose A, would you choose A or B</td>
+            <td>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="first_A" required="" value="A">
+                    <label for="id_risk-1" class="form-check-label">A</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="first_A" required="" value="B">
+                    <label for="id_risk-1" class="form-check-label">B</label>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>If the first mover chose B, would you choose A or B</td>
+            <td>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="first_B" required="" value="A">
+                    <label for="id_risk-1" class="form-check-label">A</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="first_B" required="" value="B">
+                    <label for="id_risk-1" class="form-check-label">B</label>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <button type="button" class="btn btn-primary mt-3" onclick="chooseSecond()">Next</button>
+</div>
+
 <div id="question" style="display: none">
     <h3 class="text-center">Please choose: </h3>
     <table class="table">
@@ -83,6 +116,7 @@
 <script>
     let waitDiv = document.getElementById('wait');
     let decideDiv = document.getElementById('decide');
+    let decideSecondDiv = document.getElementById('decide_second');
     let resultDiv = document.getElementById('other-result');
     let turnDiv = document.getElementById('turn');
     let questionDiv = document.getElementById('question');
@@ -93,9 +127,13 @@
     let my_choice;
 
     const firstOrsecond = (js_vars.my_id == js_vars.first_player) ? 'first' : 'second';
-    if (js_vars.my_id == js_vars.first_player) turnDiv.innerHTML = `You will make the ${firstOrsecond} choice.`;
-    if (js_vars.my_id == 1 && js_vars.mode) turnDiv.innerHTML = `You decided to choose ${firstOrsecond}.`;
-    if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML = `The other participant decided that you choose ${firstOrsecond}.`;
+    if (!js_vars.mode) {
+        turnDiv.innerHTML = `You will make the ${firstOrsecond} choice.`;
+    } else {
+        if (js_vars.my_id == 1) turnDiv.innerHTML = `You decided to choose ${firstOrsecond}.`;
+        if (js_vars.my_id == 2 && js_vars.mode == 2) turnDiv.innerHTML = `The other participant decided that you choose ${firstOrsecond}.`;
+        if (js_vars.my_id == 2 && js_vars.mode == 1) turnDiv.innerHTML = `You will make the ${firstOrsecond} choice.`;
+    }
 
     function choose(choice) {
         my_choice = choice;
@@ -103,6 +141,14 @@
             show(questionDiv);
         }
         liveSend({ type: 'choice', choice });
+    }
+    function chooseSecond() {
+        aa = (document.querySelector('input[name="first_A"]:checked') || '').value;
+        bb = (document.querySelector('input[name="first_B"]:checked') || '').value;
+        if (!aa || !bb) return;
+        A_choice = (aa == 'A') ? true : false;
+        B_choice = (bb == 'A') ? true : false;
+        liveSend({ type: 'choice', A_choice, B_choice });
     }
 
     function checkRadioValue(name) {
@@ -122,11 +168,12 @@
     }
 
     function show(ele) {
-        for (let div of [waitDiv, decideDiv, questionDiv]) {
+        for (let div of [waitDiv, decideDiv, decideSecondDiv, questionDiv]) {
             div.style.display = (div === ele) ? 'block' : 'none';
         }
-        turnDiv.style.display = (decideDiv === ele) ? 'block' : 'none';
-        resultDiv.style.display = (decideDiv === ele) ? 'block' : 'none';
+        // turnDiv.style.display = (decideDiv === ele) ? 'block' : 'none';
+        // resultDiv.style.display = (decideDiv === ele) ? 'block' : 'none';
+        turnDiv.style.display = 'block';
     }
 
     function showInstruction(ele) {
@@ -142,19 +189,19 @@
         let type = data.type;
         switch (type) {
         case 'status':
-            if (data.finished) {
+            if (data.finished && data.other_finished) {
                 document.getElementById('form').submit();
                 return;
             }
-            let is_waiting = data.should_wait;
-            if (is_waiting) {
+            if (data.finished && !data.other_finished) {
                 show(waitDiv)
             } else {
-                if (data.result === null) show(decideDiv)
-                else show(questionDiv)
-            }
-            if (data.other_result !== null) {
-                resultDiv.innerHTML = `The other participant chose <b>${data.other_result ? 'A' : 'B'}</b>`;
+                if (firstOrsecond === 'first') {
+                    if (!data.result) show(decideDiv)
+                    else show(questionDiv)
+                } else {
+                    show(decideSecondDiv)
+                }
             }
             break;
         }

@@ -41,6 +41,9 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     order_choice = models.StringField(initial='')
     choice = models.LongStringField(initial='')
+    first_A_choice = models.CurrencyField(initial=0)
+    first_B_choice = models.CurrencyField(initial=0)
+    choice_done = models.BooleanField(initial=False)
     prolificID = models.StringField(initial='')
     elicit1 = models.IntegerField(
         blank=True,
@@ -105,6 +108,7 @@ def getChoiceFromBool(choice):
 def live_method(player, data):
     group = player.group
     my_id = player.id_in_group
+    other_player = player.get_others_in_group()[0]
 
     if (player.prolificID == '' and player.participant.label is not None):
         player.prolificID = player.participant.label
@@ -113,44 +117,57 @@ def live_method(player, data):
 
     if data['type'] == 'choice':
         choice_field = 'choice{}'.format(my_id)
+        other_choice_field = 'choice{}'.format(3 - my_id)
+        # if my_id != group.player_turn:
+        #     return
+        # group.player_turn = 3 - group.player_turn
 
-        if my_id != group.player_turn:
-            return
-        group.player_turn = 3 - group.player_turn
+        if my_id == group.first_player:
+            choice = data['choice']
+            player.choice = player.participant.choice = getChoiceFromBool(choice)
+            setattr(game, choice_field, choice)
+            other_player.participant.other_choice = player.choice
 
-        choice = data['choice']
-        if getattr(game, choice_field) is not None:
-            return
-        setattr(game, choice_field, choice)
-        player.choice = player.participant.choice = getChoiceFromBool(choice)
-        player.get_others_in_group()[0].participant.other_choice = getChoiceFromBool(choice)
+            if player.choice == 'A' and other_player.choice_done:
+                other_player.choice = other_player.participant.choice = player.participant.other_choice = getChoiceFromBool(player.first_A_choice)
+                setattr(game, other_choice_field, player.first_A_choice)
+            if player.choice == 'B' and other_player.choice_done:
+                other_player.choice = other_player.participant.choice = player.participant.other_choice = getChoiceFromBool(player.first_B_choice)
+                setattr(game, other_choice_field, player.first_B_choice)
+        else:
+            player.first_A_choice = data['A_choice']
+            player.first_B_choice = data['B_choice']
+            player.choice_done = True
+
+            if other_player.choice == 'A':
+                player.choice = player.participant.choice = other_player.participant.other_choice = getChoiceFromBool(player.first_A_choice)
+                setattr(game, choice_field, player.first_A_choice)
+            if other_player.choice == 'B':
+                player.choice = player.participant.choice = other_player.participant.other_choice = getChoiceFromBool(player.first_B_choice)
+                setattr(game, choice_field, player.first_B_choice)
 
         choices = (game.choice1, game.choice2)
         is_ready = None not in choices
         if is_ready:
             p1, p2 = group.get_players()
             [game.payoff1, game.payoff2] = C.PAYOFF_MATRIX[choices]
-            p1.payoff += game.payoff1
-            p2.payoff += game.payoff2
+            p1.payoff = game.payoff1
+            p2.payoff = game.payoff2
     if data['type'] == 'answer':
         group.answer_state = True
     return {
-        1: dict(
+        1: dict (
             type = 'status',
-            should_wait = not ((group.player_turn == 1) or ((group.first_player == 1) and (group.answer_state == False))),
-            answer_state = group.answer_state,
-            result = game.choice1,
-            other_result = game.choice2,
-            finished = game.choice1 is not None and game.choice2 is not None and group.answer_state
+            result = (1 == my_id and player.choice) or (1 != my_id and other_player.choice),
+            finished = (1 == group.first_player and group.answer_state) or (1 != group.first_player and (player.choice_done or other_player.choice_done)),
+            other_finished = (1 != group.first_player and group.answer_state) or (1 == group.first_player and (player.choice_done or other_player.choice_done))
         ),
-        2: dict(
+        2: dict (
             type = 'status',
-            should_wait = not ((group.player_turn == 2) or ((group.first_player == 2) and (group.answer_state == False))),
-            answer_state = group.answer_state,
-            result = game.choice2,
-            other_result = game.choice1,
-            finished = game.choice1 is not None and game.choice2 is not None and group.answer_state
-        )
+            result = (2 == my_id and player.choice) or (2 != my_id and other_player.choice),
+            finished = (2 == group.first_player and group.answer_state) or (2 != group.first_player and (player.choice_done or other_player.choice_done)),
+            other_finished = (2 != group.first_player and group.answer_state) or (2 == group.first_player and (player.choice_done or other_player.choice_done))
+        ),
     }
 
 def live_turn_method(player, data):
