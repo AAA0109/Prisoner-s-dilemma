@@ -41,10 +41,10 @@
 </div>
 
 <div id="decide_second" style="display: none">
-    <h3 class="text-center">Please choose:</h3>
+    <h3 class="text-center">The other particiant made the first choice. You will make the second choice. Please make a choice for each senario.</h3>
     <table class="table">
         <tr>
-            <td>If the first mover chose A, would you choose A or B</td>
+            <td>Suppose the first chooser has chosen A. Do you choose A or B?</td>
             <td>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="first_A" required="" value="A">
@@ -57,7 +57,7 @@
             </td>
         </tr>
         <tr>
-            <td>If the first mover chose B, would you choose A or B</td>
+            <td>Suppose the first chooser has chosen B. Do you choose A or B?</td>
             <td>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="first_B" required="" value="A">
@@ -127,6 +127,7 @@
     let my_choice;
 
     const firstOrsecond = (js_vars.my_id == js_vars.first_player) ? 'first' : 'second';
+    console.log(js_vars)
     if (!js_vars.mode) {
         turnDiv.innerHTML = `You will make the ${firstOrsecond} choice.`;
     } else {
